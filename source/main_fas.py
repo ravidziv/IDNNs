@@ -4,7 +4,6 @@ import tensorflow as tf
 import numpy as np
 import scipy.io as sio
 import cPickle
-import matplotlib.pyplot as plt
 import time
 import shutil
 import os
@@ -15,9 +14,18 @@ import re
 from numpy import linalg as LA
 total_index_i = 0
 import argparse
+from tensorflow.examples.tutorials.mnist import input_data
+from tensorflow.examples.tutorials.mnist import mnist
 import re
-NUM_CORES = multiprocessing.cpu_count()
+import entropy_estimators as ee
 from scipy.optimize import fmin, fminbound
+
+NUM_CORES = multiprocessing.cpu_count()
+NUM_CLASSES = 10
+# The MNIST images are always 28x28 pixels.
+IMAGE_SIZE = 28
+IMAGE_PIXELS = IMAGE_SIZE * IMAGE_SIZE
+
 def KL(a, b):
     D_KL = np.nansum(np.multiply(a, np.log(np.divide(a, b+np.spacing(1)))))
     return D_KL
@@ -32,7 +40,6 @@ def caclIB(p_t_x, PXs, PYgivenXs, beta):
         DKL = d1 + d2
         probTgivenXs = np.exp(-beta * (DKL)) * pts[:, np.newaxis]
         probTgivenXs = probTgivenXs / np.tile(np.nansum(probTgivenXs, axis=0), (probTgivenXs.shape[0], 1))
-
     return probTgivenXs,PYgivenTs_update
 
 def mseFunc(beta, p_t_x, PXs, PYgivenXs):
@@ -42,7 +49,6 @@ def mseFunc(beta, p_t_x, PXs, PYgivenXs):
 
 
 def calcXI(probTgivenXs,PYgivenTs, PXs, PYs):
-
     #probTgivenXs = probTgivenXs.astype(np.longdouble)
     #PYgivenTs = PYgivenTs.astype(np.longdouble)
     #PXs =  PXs.astype(np.longdouble)
@@ -52,9 +58,6 @@ def calcXI(probTgivenXs,PYgivenTs, PXs, PYs):
     Htx = - np.nansum((np.dot(np.multiply(probTgivenXs, np.log2(probTgivenXs)), PXs)))
     Hyt = - np.nansum(np.dot(PYgivenTs*np.log2(PYgivenTs+np.spacing(1)), PTs))
     Hy = np.nansum(-PYs * np.log2(PYs+np.spacing(1)))
-    IYT = np.sum([np.nansum(np.log2(prob_y_given_t /PYs) * (prob_y_given_t *prob_t))
-                  for prob_y_given_t, prob_t in zip(PYgivenTs.T, PTs)], axis=0)
-
     IYT = Hy - Hyt
     ITX = Ht - Htx
     return ITX, IYT
@@ -79,8 +82,7 @@ def caclInfomration(PXgivenTs, PYgivenTs, PTs, PYs, PXs, PYgivenXs):
 
 def processInputProb(t_index, unique_inverse, label, b, b1, len_unique_a):
     indexs = unique_inverse == t_index
-    p_y = np.sum(label[0][indexs]) / len(label[0][indexs])
-    p_y_ts = np.array([p_y, 1 - p_y])
+    p_y_ts = np.sum(label[indexs], axis=0) / label[indexs].shape[0]
     unique_array_internal, unique_counts_internal = \
         np.unique(b[indexs], return_index=False, return_inverse=False, return_counts=True)
     indexes_x = np.where(np.in1d(b1, b[indexs]))
@@ -88,8 +90,13 @@ def processInputProb(t_index, unique_inverse, label, b, b1, len_unique_a):
     p_x_ts[indexes_x] = unique_counts_internal / float(sum(unique_counts_internal))
     return p_x_ts, p_y_ts
 
+def estimateInformation(Xs,Ys, Ts ):
+    estimate_IXT = ee.midc(Xs, Ts)
+    estimate_IYT = ee.mi(Ys, Ts)
+    return estimate_IXT, estimate_IYT
 
-def processInputIter(data, bins, unique_inverse, label, b, b1, len_unique_a, pys, pxs, py_x, beta):
+def processInputIter(data, bins, unique_inverse, label, b, b1, len_unique_a, pys, pxs, py_x):
+    #print beta
     digitized = bins[np.digitize(np.squeeze(data.reshape(1, -1)), bins) - 1].reshape(len(data), -1)
     b2 = np.ascontiguousarray(digitized).view(
         np.dtype((np.void, digitized.dtype.itemsize * digitized.shape[1])))
@@ -100,6 +107,7 @@ def processInputIter(data, bins, unique_inverse, label, b, b1, len_unique_a, pys
         [processInputProb(i, unique_inverse_t, label, b, b1, len_unique_a) for i in range(0, len(unique_array))]
     )
     local_IXT, local_ITY = caclInfomration(pxys[:, 0], pxys[:, 1], p_ts, pys, pxs, py_x)
+    #est_IXT, est_ITY = estimateInformation(Xs,Ys, Ts )
     return local_IXT, local_ITY
 
 def processInputIterAllNeurons(data, bins, unique_inverse, label, b, b1, len_unique_a, pys, pxs, py_x):
@@ -123,36 +131,17 @@ def processInputIterAllNeurons(data, bins, unique_inverse, label, b, b1, len_uni
     return np.array(I_XT), np.array(I_TY)
 
 
-
 def processInput(iter_index, ws_iter_index, bins, unique_inverse, label, b, b1, len_unique_a, pys, pxs, py_x):
-    #print (iter_index)
-    betas = [20, 30, 40, 60, 100, 100, 100]
-    betas.reverse()
+    print (iter_index)
     iter_infomration = np.array(
-        [processInputIter(ws_iter_index[i], bins, unique_inverse, label, b, b1, len_unique_a, pys, pxs, py_x,
-                          betas[i]) for i in range(0, len(ws_iter_index))])
-    iter_infomrationNeurons = np.array([processInputIterAllNeurons(ws_iter_index[i], bins, unique_inverse, label, b, b1, len_unique_a, pys, pxs, py_x,
-                         ) for i in range(0, len(ws_iter_index))])
-    iter_inf_sep = []
-    for i in range(iter_infomrationNeurons.shape[0]):
-        current_inf_x = np.array(iter_infomrationNeurons[i,:])[0]
-        current_inf_y = np.array(iter_infomrationNeurons[i,:])[1]
-        current_sum_x = np.sum(current_inf_x)
-        current_sum_y = np.sum(current_inf_y)
-
-        iter_inf_sep.append([current_sum_x,current_sum_y])
-        #print (current_sum_x, , current_sum_y)
-    iter_inf_sep = np.array(iter_inf_sep)
-    #sun_inf = np.sum(iter_infomrationNeurons, axis=1)
-    abs_val = np.abs(iter_inf_sep - iter_infomration)/(iter_inf_sep + iter_infomration)
-
-
-    #print (abs_val)
-    #print (iter_infomration)
-    return iter_infomration,iter_infomrationNeurons
-    #return abs_val
+        [processInputIter(ws_iter_index[i], bins, unique_inverse, label, b, b1, len_unique_a, pys, pxs, py_x) for i in range(0, len(ws_iter_index))])
+    #iter_infomrationNeurons = np.array([processInputIterAllNeurons(ws_iter_index[i], bins, unique_inverse, label, b, b1, len_unique_a, pys, pxs, py_x,
+    #                     ) for i in range(0, len(ws_iter_index))])
+    return iter_infomration
 
 def getProb(ws, x, label):
+    np.set_printoptions(precision=4)
+    np.set_printoptions(suppress=True)
     #return np.zeros((len(ws), 2, 6, 2))
     label = np.array(label).astype(np.float)
     b = np.ascontiguousarray(x).view(np.dtype((np.void, x.dtype.itemsize * x.shape[1])))
@@ -160,29 +149,16 @@ def getProb(ws, x, label):
         np.unique(b, return_index=True, return_inverse=True, return_counts=True)
     unique_a = x[unique_indices]
     b1 = np.ascontiguousarray(unique_a).view(np.dtype((np.void, unique_a.dtype.itemsize * unique_a.shape[1])))
-    prob_y = np.sum(label) / float(label.shape[1])
-    pys = [prob_y, 1 - prob_y]
+    pys = np.sum(label, axis=0) / float(label.shape[0])
     pxs = unique_counts / float(sum(unique_counts))
     bins = np.linspace(-1, 1, 50)
     py_x = []
-    np.set_printoptions(precision=4)
-    np.set_printoptions(suppress=True)
     for i in range(0, len(unique_array)):
         indexs = unique_inverse == i
-        py_x_current = np.sum(label[0][indexs]) / len(label[0][indexs])
+        py_x_current = label[indexs]
         py_x.append(py_x_current)
-    infomration = np.array(Parallel(n_jobs=NUM_CORES)(delayed(processInput)
-                                                      (i,ws[i], bins,unique_inverse,label, b, b1,len(unique_a), pys, pxs,py_x)
-                                           for i in range(len(ws))))
-
-    """
-    for i in range(infomration.shape[0]):
-        print (i)
-        print (infomration[i])
-        print ('+++++++++++++++')
-    """
-    #infomration = np.array(processInput(1, ws[0], bins, unique_inverse, label, b, b1, len(unique_a), pys, pxs, py_x))
-    #print infomration.shape
+    infomration = np.array(Parallel(n_jobs=NUM_CORES)(delayed(processInput) (i,ws[i], bins,unique_inverse,label, b, b1,len(unique_a), pys, pxs,py_x) for i in range(len(ws))))
+    #infomration = np.array(processInput(-1, ws[-1], bins, unique_inverse, label, b, b1, len(unique_a), pys, pxs, py_x))
     return infomration
 
 
@@ -209,6 +185,90 @@ def trainNets(hidden, X_test, labels_test, X_train, labels_train, X_all, labels_
     test_pred = sess.run(accuracy, feed_dict={x: X_test, y_true: labels_test})
     train_pred = sess.run(accuracy, feed_dict={x: X_train, y_true: labels_train})
     return ws, test_pred, train_pred
+
+def runNetCostum(layerSize, num_of_ephocs, learning_rate_local, batch_size,indexes):
+    tf.reset_default_graph()
+    print ('Load data')
+    data_sets = input_data.read_data_sets('MNIST_data', one_hot=True)
+    with tf.Graph().as_default():
+        x = tf.placeholder(tf.float32, shape=[None, IMAGE_PIXELS], name='x')
+        labels = tf.placeholder(tf.int64, shape=[None, NUM_CLASSES], name='y_true')
+        hidden, weightsModel = [], []
+        with tf.name_scope('hidden0'):
+            weights = tf.Variable(
+                tf.truncated_normal([IMAGE_PIXELS, layerSize[0]],
+                                    stddev=1.0 / np.sqrt(float(IMAGE_PIXELS))),
+                name='weights')
+            biases = tf.Variable(tf.zeros([layerSize[0]]),
+                                 name='biases')
+            weightsModel.append(weights)
+            hidden.append(tf.nn.tanh(tf.matmul(x, weights) + biases))
+        for i in xrange(1, len(layerSize)):
+            with tf.name_scope('hidden' + str(i)):
+                weights = tf.Variable(
+                    tf.truncated_normal([layerSize[i - 1], layerSize[i]],
+                                        stddev=1.0 / np.sqrt(float(layerSize[i - 1]))),
+                    name='weights')
+                biases = tf.Variable(tf.zeros([layerSize[i]]),
+                                     name='biases')
+                weightsModel.append(weights)
+
+                hidden.append(tf.nn.tanh(tf.matmul(hidden[i - 1], weights) + biases))
+        with tf.name_scope('softmax_linear'):
+            weights = tf.Variable(
+                tf.truncated_normal([layerSize[-1], NUM_CLASSES],
+                                    stddev=1.0 / np.sqrt(float(layerSize[-1]))),
+                name='weights')
+            biases = tf.Variable(tf.zeros([NUM_CLASSES]),
+                                 name='biases')
+            weightsModel.append(weights)
+            logits = tf.nn.softmax(tf.matmul(hidden[-1], weights) + biases)
+        hidden.append(logits)
+
+        labels = tf.to_int64(labels)
+        cross_entropy = tf.reduce_mean(
+            tf.nn.softmax_cross_entropy_with_logits(labels=labels, logits=logits))
+
+        cross_entropy = tf.reduce_mean(cross_entropy, name='xentropy_mean')
+        var_grad = tf.gradients(cross_entropy, hidden)
+        grads = tf.gradients(cross_entropy, tf.trainable_variables())
+        optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate_local).minimize(cross_entropy)
+        correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(labels, 1))
+        accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+        points = np.rint(np.arange(0, data_sets.train.num_examples+1,batch_size)).astype(dtype=np.int32)
+        print ('Number of points in batch  - ' , len(points))
+        init = tf.global_variables_initializer()
+        train_pred, test_pred = [], []
+        ws, ws_test,ws_train,ws_ps = [], [],[],[]
+        loss_func_test,loss_func_train,var_grad_val, l1_norm, l2_norm =[],[],[], [],[]
+
+        with tf.Session() as sess:
+            sess.run(init)
+            for j in range(0, num_of_ephocs):
+                epochs_grads = []
+                if np.mod(j, 2) ==1:
+                    print (j,sess.run(accuracy, feed_dict={x: data_sets.test.images, labels: data_sets.test.labels}))
+                for i in xrange(0, len(points) - 1):
+                    #batch_xs, batch_ys = data_sets.train.next_batch(batch_size,fake_data)
+                    batch_xs = data_sets.train.images[points[i]:points[i + 1],:]
+                    batch_ys = data_sets.train.labels[points[i]:points[i + 1],:]
+                    optimizer.run({x: batch_xs, labels: batch_ys})
+                    epochs_grads.append(sess.run(grads, feed_dict={x: batch_xs, labels: batch_ys}))
+                if j in indexes:
+                    ws.append(sess.run(hidden, feed_dict={x: data_sets.test.images, labels: data_sets.test.labels}))
+                    loss_func_test.append(sess.run(cross_entropy, feed_dict={x: data_sets.test.images, labels: data_sets.test.labels}))
+                    loss_func_train.append(sess.run(cross_entropy, feed_dict={x: data_sets.train.images, labels: data_sets.train.labels}))
+                    test_pred.append(sess.run(accuracy, feed_dict={x: data_sets.test.images, labels: data_sets.test.labels}))
+                    train_pred.append(sess.run(accuracy, feed_dict={x: data_sets.train.images, labels: data_sets.train.labels}))
+                    var_grad_val.append(epochs_grads)
+                    ws_ps.append(sess.run(weightsModel))
+                    flatted_list = [sub_item for sublist in sess.run(weightsModel) for item in sublist for sub_item in item]
+                    l1_norm.append(LA.norm(np.array(flatted_list), 1))
+                    l2_norm.append(LA.norm(np.array(flatted_list)))
+    X_test = 0
+    X_train = 0
+    return ws, test_pred, train_pred, X_test, X_train, loss_func_test, loss_func_train,var_grad_val,l1_norm,l2_norm, flatted_list, ws_ps
+
 
 
 def runNet(F_org, y_org, sampleSize, layerSize, F, y_t, input_size, num_of_ephocs, name_file, learning_rate_local, batch_size,indexes):
@@ -304,26 +364,24 @@ def runNet(F_org, y_org, sampleSize, layerSize, F, y_t, input_size, num_of_ephoc
 
 def calcAndRun(calc_information, F_org, y_org, sampleSize, layerSize, F, y_t, input_size, num_of_ephocs, name_to_save,
         learning_rate, batch_size,indexes,save_ws):
+    information_all= 0
     t = time.time()
-    ws, test_pred, train_error, X_test, X_train,loss_func_test, loss_func_train,var_grad_val,l1_norm,l2_norm,flatted_list  = runNet(F_org, y_org, sampleSize, layerSize, F, y_t, input_size,
-                                                                            num_of_ephocs, name_to_save,
-                                                                            learning_rate, batch_size,indexes)
+    data_sets = input_data.read_data_sets('MNIST_data', one_hot=True)
+    F_org = data_sets.test.images
+    y_org = data_sets.test.labels
+    #ws, test_pred, train_error, X_test, X_train,loss_func_test, loss_func_train,var_grad_val,l1_norm,l2_norm,flatted_list,ws_ps  = runNet(F_org, y_org, sampleSize, layerSize, F, y_t, input_size,
+    #                                                                        num_of_ephocs, name_to_save,
+    #                                                                        learning_rate, batch_size,indexes)
+    ws, test_pred, train_error, X_test, X_train, loss_func_test, loss_func_train, var_grad_val, l1_norm, l2_norm, flatted_list, ws_ps =\
+        runNetCostum(layerSize, num_of_ephocs, learning_rate, batch_size,indexes)
     elapsed = time.time() - t
     t = time.time()
-    information_all= 0
-
     if calc_information ==1:
-        print 'Trueeeeeeeeeeeeeeeeeeeeeeee--------------'
         information_all = getProb(ws, F_org, y_org)
-    else:
-        print 'FFFFFFFFFFFFFFFF++++++++++++++++++'
     elapsed = time.time() - t
     if not save_ws:
         ws = 0
         flatted_list =0
-    else:
-        print ('Keep SWS')
-    #print (np.array(var_grad_val)[0,0,0])
     return information_all, test_pred, train_error, loss_func_test, loss_func_train,ws,var_grad_val,l1_norm,l2_norm,flatted_list
 
 
@@ -347,8 +405,9 @@ def chooseNet(type_net):
         layers_sizes = [[10, 7]]
     elif type_net == '5':
         layers_sizes = [[10]]
+    elif type_net == '6':
+        layers_sizes = [[400,200, 100,32]]
     else:
-        print 'costum network!!!!'
         layers_sizes  = [ map(int, inner.split(',')) for inner in re.findall("\[(.*?)\]", type_net) ]
     return layers_sizes
 """
@@ -376,6 +435,7 @@ def main(type_net, name_to_store, new_index, batch_size,learning_rate,num_of_eph
         num_of_samples,num_of_disribuation_samples,start_samples,save_ws,calc_information):
     print ("Starting calculation")
     name = 'data/' +data_name
+    #name = data_name
     new_index_string= re.sub('[(){}<>]', '', str(new_index))
     layers_sizes = chooseNet(type_net)
     samples = np.linspace(1, 100, 199)[new_index]
@@ -414,67 +474,55 @@ def main(type_net, name_to_store, new_index, batch_size,learning_rate,num_of_eph
     var_grad_val = [[[[None] for k in range(len(samples))] for j in range(len(layers_sizes))]for i in range(num_of_repeats)]
     if calc_information ==1:
         information_all = np.zeros([num_of_repeats, len(layers_sizes), len(samples), len(epochs_indexes), max_size + 1, 2])
-        information_each_neuron = [[[[None] for k in range(len(samples))] for j in range(len(layers_sizes))]for i in range(num_of_repeats)]
-    test_error = np.zeros([num_of_repeats, len(layers_sizes), len(samples), len(epochs_indexes)])
-    train_error = np.zeros([num_of_repeats, len(layers_sizes), len(samples), len(epochs_indexes)])
-    loss_train = np.zeros([num_of_repeats, len(layers_sizes), len(samples), len(epochs_indexes)])
-    loss_test = np.zeros([num_of_repeats, len(layers_sizes), len(samples), len(epochs_indexes)])
-    l1_norms = np.zeros([num_of_repeats, len(layers_sizes), len(samples), len(epochs_indexes)])
-    l2_norms=np.zeros([num_of_repeats, len(layers_sizes), len(samples), len(epochs_indexes)])
-    infomration = Parallel(n_jobs=NUM_CORES)(delayed(runNetParallel)
-                                      (calc_information, i,j,k ,F,y, samples[i], layers_sizes[j],input_size, num_of_ephocs,name_to_save,learning_rate,batch_size,epochs_indexes,save_ws)
-                                        for i in range(len(samples)) for j in range(len(layers_sizes)) for k in range(num_of_repeats))
+        #information_each_neuron = [[[[None] for k in range(len(samples))] for j in range(len(layers_sizes))]for i in range(num_of_repeats)]
+    else:
+        information_all =0
+        #information_each_neuron =0
+    test_error, train_error = np.zeros([num_of_repeats, len(layers_sizes), len(samples), len(epochs_indexes)]), np.zeros([num_of_repeats, len(layers_sizes), len(samples), len(epochs_indexes)])
+    loss_train, loss_test = np.zeros([num_of_repeats, len(layers_sizes), len(samples), len(epochs_indexes)]), np.zeros([num_of_repeats, len(layers_sizes), len(samples), len(epochs_indexes)])
+    l1_norms, l2_norms = np.zeros([num_of_repeats, len(layers_sizes), len(samples), len(epochs_indexes)]), np.zeros([num_of_repeats, len(layers_sizes), len(samples), len(epochs_indexes)])
+    #infomration = Parallel(n_jobs=NUM_CORES)(delayed(runNetParallel)
+    #                                  (calc_information, i,j,k ,F,y, samples[i], layers_sizes[j],input_size, num_of_ephocs,name_to_save,learning_rate,batch_size,epochs_indexes,save_ws)
+    #                                    for i in range(len(samples)) for j in range(len(layers_sizes)) for k in range(num_of_repeats))
 
-    #infomration =[runNetParallel(i,j,k ,F,y, samples[i], layers_sizes[j],input_size, num_of_ephocs,name_to_save
-    #,learning_rate,batch_size,epochs_indexes,save_ws)
-    #                                    for i in range(len(samples)) for j in range(len(layers_sizes)) for k in range(num_of_repeats)]
+    infomration =[runNetParallel(calc_information, i,j,k ,F,y, samples[i], layers_sizes[j],input_size, num_of_ephocs,name_to_save
+        ,learning_rate,batch_size,epochs_indexes,save_ws)
+                                        for i in range(len(samples)) for j in range(len(layers_sizes)) for k in range(num_of_repeats)]
     for i in range(len(samples)):
         for j in range(len(layers_sizes)):
             for k in range(num_of_repeats):
                 index= i*len(layers_sizes)*num_of_repeats+j*num_of_repeats+k
-                loca_inf_all , local_erorr, local_train,loss_func_test, loss_func_train,ws,c_var_grad_val,l1_norm,l2_norm,flatted_list_ws    = infomration[index]
+                loca_inf_all , test_error[k, j, i, :], train_error[k, j, i, :],loss_test[k, j, i, :], loss_train[k, j, i, :],ws, var_grad_val[k][j][i], l1_norms[k, j, i, :], \
+                l2_norms[k, j, i, :],flatted_list_ws    = infomration[index]
                 if calc_information ==1:
-                    org_information = loca_inf_all[:,0, :,:]
-                    per_neuron_information = loca_inf_all[:,1, :,:]
+                    org_information = loca_inf_all[:, :,:]
+                    #per_neuron_information = loca_inf_all[:,1, :,:]
                     current_num_of_layer = org_information.shape[1]
                     information_all[k, j, i, :, 0:current_num_of_layer, :] = org_information
-                    information_each_neuron[k][j][i] = per_neuron_information
-                test_error[k, j, i, :] = local_erorr
-                train_error[k, j, i, :] = local_train
-                loss_train[k, j, i, :] = loss_func_train
-                loss_test[k, j, i, :] = loss_func_test
-                l1_norms[k, j, i, :] = l1_norm
-                l2_norms[k, j, i, :] = l2_norm
-                var_grad_val[k][j][i] =c_var_grad_val
+                    #information_each_neuron[k][j][i] = per_neuron_information
                 if save_ws =='1':
                     ws_all[k][j][i] = flatted_list_ws
     data = {}
-    data['information'] = information_all
-    data['test_error'] = test_error
-    data['train_error'] = train_error
-    data['loss_train'] = loss_train
-    data['loss_test'] = loss_test
-    data['information_each_neuron'] = information_each_neuron
-    data['var_grad_val'] = var_grad_val
-    data['l1_norms'] = l1_norms
-    data['ws_all'] = ws_all
-    data['l2_norms'] = l2_norms
+    data['information'], data['test_error'] , data['train_error']= information_all, test_error, train_error
+    data['loss_train'], data['loss_test'] = loss_train, loss_test
+    #data['information_each_neuron'] = information_each_neuron
+    data['var_grad_val'],data['l1_norms'],data['ws_all'] = var_grad_val,l1_norms,ws_all
     data['params'] = params
     with open(directory + 'data.pickle', 'wb') as f:
         cPickle.dump(data, f, protocol=2)
     srcfile = 'source/main_fas.py'
     dstdir = directory+'main_fas.py'
-    shutil.copy(srcfile, dstdir)
+    #shutil.copy(srcfile, dstdir)
     print ('Finished')
 
-if __name__ == "__main__":
+def runNetworkWithInformation():
     parser = argparse.ArgumentParser()
     parser.add_argument('-start_samples', '-ss', dest="start_samples",default=1, type=int)
-    parser.add_argument('-batch_size', '-b', dest="batch_size",default=3563, type=int)
-    parser.add_argument('-learning_rate', '-l', dest="learning_rate",default=0.0004, type=float)
-    parser.add_argument('-num_repeat', '-r', dest="num_of_repeats",default=40, type=int)
-    parser.add_argument('-num_epochs', '-e', dest="num_of_ephocs",default=10000, type=int)
-    parser.add_argument('-net', '-n', dest="net_type",default='1')
+    parser.add_argument('-batch_size', '-b', dest="batch_size",default=2544, type=int)
+    parser.add_argument('-learning_rate', '-l', dest="learning_rate",default=0.0002, type=float)
+    parser.add_argument('-num_repeat', '-r', dest="num_of_repeats",default=1, type=int)
+    parser.add_argument('-num_epochs', '-e', dest="num_of_ephocs",default=400, type=int)
+    parser.add_argument('-net', '-n', dest="net_type",default='6')
     parser.add_argument('-inds', '-i', dest="inds",default='[198]')
     parser.add_argument('-name', '-na', dest="name",default='r')
     parser.add_argument('-d_name', '-dna', dest="data_name",default='var_u')
@@ -486,3 +534,6 @@ if __name__ == "__main__":
     args.inds  =[map(int, inner.split(',')) for inner in re.findall("\[(.*?)\]", args.inds)]
     main(args.net_type, args.name, args.inds, args.batch_size, args.learning_rate, args.num_of_ephocs, args.num_of_repeats,
     args.data_name, args.num_of_samples,args.num_of_disribuation_samples, args.start_samples, args.save_ws,args.calc_information )
+
+if __name__ == "__main__":
+    runNetworkWithInformation()
