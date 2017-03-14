@@ -459,8 +459,8 @@ def main(type_net, name_to_store, new_index, batch_size,learning_rate,num_of_eph
     data['params'] = params
     with open(directory + 'data.pickle', 'wb') as f:
         cPickle.dump(data, f, protocol=2)
-    srcfile = 'source/main_fas.py'
-    dstdir = directory+'main_fas.py'
+    srcfile = 'source/run_network_with_information.py'
+    dstdir = directory+'run_network_with_information.py'
     shutil.copy(srcfile, dstdir)
     print ('Finished')
 
