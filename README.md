@@ -1,8 +1,8 @@
-#IDNNs
-##Description
+# IDNNs
+## Description
 IDNNs is a python library that implements training and calculating of information in deep neural networks [\[Shwartz-Ziv & Tishby, 2017\]](#IDNNs) in TensorFlow. The libary allows to investigate how networks look on the information plane and how it changed during the learning.
 
-##Usage
+## Usage
 All the code is under the 'source' directory.
 For training a network and calculate the MI and the gradients of it run the main method of [run_network_with_information.py](source/run_network_with_information.py).
 Off-course that you can also run only specipic methods for running only the training procedure/calculating the MI.
