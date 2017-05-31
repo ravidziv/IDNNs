@@ -39,27 +39,9 @@ def calc_information(probTgivenXs, PYgivenTs, PXs, PYs, PTs, probTgivenXs_n, PYg
     Ht_n = np.nansum(-np.dot(PTs_n, np.log2(PTs_n+np.spacing(1))))
     Htx_n = - np.nansum((np.dot(np.multiply(probTgivenXs_n, np.log2(probTgivenXs_n)), PXs_n)))
     Hyt_n = - np.nansum(np.dot(PYgivenTs_n * np.log2(PYgivenTs_n + np.spacing(1)), PTs_n))
-    if type==0:
-        IYT = Hy - Hyt
-        ITX = Ht - Htx
-    elif type==1:
-        IYT = Hy - Hyt_n
-        ITX = Ht_n - Htx_n
-    elif type == 2:
-        IYT = Hy - Hyt_n
-        ITX = Ht - Htx_n
-    elif type == 3:
-        IYT = Hy - Hyt_n
-        ITX = Ht_n - Htx
-    elif type == 4:
-        IYT = Hy - Hyt
-        ITX = Ht_n - Htx_n
-    elif type == 5:
-        IYT = Hy - Hyt
-        ITX = Ht_n - Htx
-    elif type == 6:
-        IYT = Hy - Hyt
-        ITX = Ht - Htx_n
+    IYT = Hy - Hyt
+    ITX = Ht - Htx
+
     return ITX, IYT
 
 

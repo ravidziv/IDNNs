@@ -7,9 +7,17 @@ import cPickle
 import shutil
 import re
 import argparse
+from idnns.plots import plot_figures as plt_fig
 from idnns.information import information_process  as inn
 import  tensorflow as tf
 NUM_CORES = multiprocessing.cpu_count()
+def str2bool(v):
+    if v.lower() in ('yes', 'true', 't', 'y', '1') or v==True:
+        return True
+    elif v.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
 
 def get_default_parser(num_of_samples = None):
     parser = argparse.ArgumentParser()
@@ -39,16 +47,16 @@ def get_default_parser(num_of_samples = None):
                         help='The architecture of the networks')
 
     parser.add_argument('-inds',
-                        '-i', dest="inds", default='[100]',
+                        '-i', dest="inds", default='[80]',
                         help='The percent of the training data')
 
     parser.add_argument('-name',
-                        '-na', dest="name", default='ttte',
+                        '-na', dest="name", default='net',
                         help='The name to save the results')
 
     parser.add_argument('-d_name',
                         '-dna', dest="data_name", default='var_u',
-                        help='The dataset n')
+                        help='The dataset that we want to run ')
 
     parser.add_argument('-num_samples',
                         '-ns', dest="num_of_samples", default=1800,
@@ -60,55 +68,50 @@ def get_default_parser(num_of_samples = None):
                         type=int,help='S')
 
     parser.add_argument('-save_ws',
-                        '-sws', dest="save_ws", default=False,
-                        help='if we want to save the weights of the network')
+                        '-sws', dest="save_ws", type=str2bool, nargs='?', const=False,default=False,
+                        help='if we want to save the output of the layers')
 
     parser.add_argument('-calc_information',
-                        '-cinf', dest="calc_information", default=False,
-                        help='1 if we want to calculate the MI in the network')
+                        '-cinf', dest="calc_information", type=str2bool, nargs='?', const=True,default=True,
+                        help='if we want to calculate the MI in the network for all the epochs')
 
     parser.add_argument('-calc_information_last',
-                        '-cinfl', dest="calc_information_last", default=False,
-                        help='1 if we want to calculate the MI in the network')
+                        '-cinfl', dest="calc_information_last", type=str2bool, nargs='?', const=False,default=False,
+                        help='if we want to calculate the MI in the network only for the last epoch')
 
     parser.add_argument('-save_grads',
-                        '-sgrad', dest="save_grads", default=False,
-                        help='Save tge gradients in the network')
+                        '-sgrad', dest="save_grads",type=str2bool, nargs='?', const=False,default=False,
+                        help='if we want to save the gradients in the network')
 
     parser.add_argument('-run_in_parallel',
-                        '-par', dest="run_in_parallel", default=False,
+                        '-par', dest="run_in_parallel", type=str2bool, nargs='?', const=False,default=False,
                         help='If we want to run all the networks in parallel mode')
 
     parser.add_argument('-num_of_bins',
-                        '-nbins', dest="num_of_bins", default=50,
-                        help='The number of bins that we divide the neurons output')
+                        '-nbins', dest="num_of_bins", default=30, type=int,
+                        help='The number of bins that we divide the output of the neurons')
 
-    parser.add_argument('-calc_vectors',
-                        '-cvec', dest="calc_vectors", default=False,
-                        help='if true calculate the eigenvectores of the matrices')
+    parser.add_argument('-activation_function',
+                        '-af', dest="activation_function", default=0, type= int,
+                        help='The activation function of the model 0 for thnh 1 for RelU')
 
-    parser.add_argument('-model_type',
-                        '-mtype', dest="model_type", default=0,
-                        help='ho to bulid the network')
-
-    parser.add_argument('-iad',dest="interval_accuracy_display", default=4990,
-                        help='The interval for dipslay accuracy')
+    parser.add_argument('-iad',dest="interval_accuracy_display", default=499,type = int,
+                        help='The interval for display accuracy')
 
     parser.add_argument('-interval_information_display',
-                        '-iid', dest="interval_information_display", default=100,
-                        help='The interval for dipslay the infomration calculation')
-
-    parser.add_argument('-local_mode',
-                        '-lm', dest="local_mode", default=1,
-                        help='1 if run it from local computer')
+                        '-iid', dest="interval_information_display", default=30,type = int,
+                        help='The interval for display the information calculation')
 
     parser.add_argument('-cov_net',
-                        '-cov', dest="cov_net", default=True,
-                        help='1 if run it from local computer')
+                        '-cov', dest="cov_net", type=str2bool, nargs='?', const=False,default=False,
+                        help='True if we want covnet')
 
     parser.add_argument('-rl',
-                        '-rand_labels', dest="random_labels", default=False,
-                        help='')
+                        '-rand_labels', dest="random_labels", type=str2bool, nargs='?', const=False,default=False,
+                        help='True if we want to set random labels')
+    parser.add_argument('-data_dir',
+                        '-dd', dest="data_dir", default='data/',
+                        help='The directory for finding the data')
 
 
     args = parser.parse_args()
@@ -119,33 +122,77 @@ def get_default_parser(num_of_samples = None):
 
 
 class informationNetwork():
-    def save_data(self):
-        data = {'information': self.information, 'information_estimation': self.information_estimation,
+
+    def __init__(self, rand_int = 0, num_of_samples = None, args = None):
+        if args ==None:
+            args = get_default_parser(num_of_samples)
+        self.cov_net = args.cov_net
+        self.calc_information = args.calc_information
+        self.run_in_parallel = args.run_in_parallel
+        self.num_ephocs = args.num_ephocs
+        self.learning_rate = args.learning_rate
+        self.batch_size = args.batch_size
+        self.activation_function = args.activation_function
+        self.interval_accuracy_display = args.interval_accuracy_display
+        self.save_grads = args.save_grads
+        self.num_of_repeats = args.num_of_repeats
+        self.calc_information_last = args.calc_information_last
+        self.num_of_bins = args.num_of_bins
+        self.interval_information_display = args.interval_information_display
+        self.save_ws = args.save_ws
+
+        self.name = args.data_dir + args.data_name
+        # The arch of the networks
+        self.select_network_arch(args.net_type)
+        # The percents of the train data samples
+        self.train_samples = np.linspace(1, 100, 199)[[[x * 2 - 2 for x in index] for index in args.inds]]
+        # The indexs that we want to calculate the information for them in logspace interval
+        self.epochs_indexes = np.unique(
+            np.logspace(np.log2(args.start_samples), np.log2(args.num_ephocs), args.num_of_samples, dtype=int, base=2)) - 1
+        max_size = np.max([len(layers_size) for layers_size in self.layers_sizes])
+        #load data
+        self.data_sets = nn.load_data(self.name, args.random_labels)
+        #create arrays for saving the data
+        self.ws, self.grads, self.information,self.models ,self.names, self.networks = [[[[[None] for k in range(len(self.train_samples))] for j in range(len(self.layers_sizes))]
+                      for i in range(self.num_of_repeats)] for _ in range(6)]
+
+        self.loss_train, self.loss_test,  self.test_error, self.train_error, self.l1_norms, self.l2_norms= \
+            [np.zeros((self.num_of_repeats, len(self.layers_sizes), len(self.train_samples), len(self.epochs_indexes))) for _ in range(6)]
+
+        params = {'samples_len': len(self.train_samples), 'num_of_disribuation_samples': args.num_of_disribuation_samples,
+                  'layersSizes': self.layers_sizes, 'numEphocs': args.num_ephocs, 'batch': args.batch_size,
+                  'numRepeats': args.num_of_repeats, 'numEpochsInds': len(self.epochs_indexes),
+                  'LastEpochsInds': self.epochs_indexes[-1], 'DataName': args.data_name, 'learningRate': args.learning_rate}
+
+        self.name_to_save = args.name + "_" + "_".join([str(i) + '=' + str(params[i]) for i in params])
+
+        params['train_samples'], params['CPUs'], params[
+            'directory'],params['epochsInds']  = self.train_samples, NUM_CORES, self.name_to_save,self.epochs_indexes
+        self.params =params
+        self.rand_int = rand_int
+
+        #If we trained already the network
+        self.traind_network = False
+
+    def save_data(self,parent_dir='jobs/', file_to_save = 'data.pickle'):
+        """Save the data to the file """
+        directory =  '{0}{1}/'.format(parent_dir, self.params['directory'])
+        data = {'information': self.information,
                      'test_error': self.test_error, 'train_error': self.train_error, 'var_grad_val': self.grads,
                      'loss_test': self.loss_test, 'loss_train': self.loss_train, 'params': self.params
-            , 'l1_norms': self.l1_norms, 'weights': self.ws}
+            , 'l1_norms': self.l1_norms, 'activation': self.ws}
 
-        """Save the given data in the given directory"""
-        directory = 'jobs/' + self.params['directory'] + '/'
-        print directory
-        if int(self.args.local_mode)  ==1:
-            directory = '/Users/ravidziv/PycharmProjects/IDNNs/jobs/'+self.params['directory'] + '/'
         if not os.path.exists(directory):
             os.makedirs(directory)
-        with open(directory + 'data.pickle', 'wb') as f:
+        self.dir_saved = directory
+        with open(self.dir_saved +file_to_save , 'wb') as f:
             cPickle.dump(data, f, protocol=2)
-        # Also save the code file
-        #file_name = os.path.realpath(__file__)
-        #srcfile = os.getcwd() + '/' + os.path.basename(file_name)
-        #dstdir = directory + os.path.basename(file_name)
-        #shutil.copy(srcfile, dstdir)
 
     def select_network_arch(self,type_net):
-        """Selcet the architectures of the networks according to thier type
-        Can we choose also costume network"""
+        """Selcet the architectures of the networks according to their type
+        we can choose also costume network for example type_net=[size_1, size_2, size_3]"""
         if type_net == '1':
             self.layers_sizes = [[10, 7, 5,4,3]]
-            #self.layers_sizes = [[30, 20, 7,5,4]]
         elif type_net == '1-2-3':
             self.layers_sizes = [[10, 9, 7, 7, 3], [10, 9, 7, 5, 3], [10, 9, 7, 3, 3]]
         elif type_net == '11':
@@ -159,145 +206,80 @@ class informationNetwork():
         elif type_net == '5':
             self.layers_sizes = [[10]]
         elif type_net == '6':
-            #self.layers_sizes = [[50, 25, 20,10]]
             self.layers_sizes = [[1000, 500, 100]]
-
         else:
+            #Custom network
             self.layers_sizes = [map(int, inner.split(',')) for inner in re.findall("\[(.*?)\]", type_net)]
 
-
-    def create_regular_array(self):
-        return np.zeros(
-            [self.args.num_of_repeats, len(self.layers_sizes), len(self.train_samples), len(self.epochs_indexes)])
-
-
-    def __init__(self, rand_int = 0, num_of_samples = None, args = None):
-        if args ==None:
-            args = get_default_parser(num_of_samples)
-        self.args = args
-        self.name = 'data/' + self.args.data_name
-        if int(self.args.local_mode)  ==1:
-            self.name = '/Users/ravidziv/PycharmProjects/IDNNs/data/'+self.args.data_name
-
-        # The arch of the networks
-        self.select_network_arch(self.args.net_type)
-        # The percents of the train data samples
-        self.train_samples = np.linspace(1, 100, 199)[[[x * 2 - 2 for x in index] for index in args.inds]]
-        # The indexs that we want to calculate the information for them
-        self.epochs_indexes = np.unique(
-            np.logspace(np.log2(self.args.start_samples), np.log2(self.args.num_ephocs), args.num_of_samples, dtype=int, base=2)) - 1
-        max_size = np.max([len(layers_size) for layers_size in self.layers_sizes])
-        # load data
-        if int(self.args.random_labels) ==1:
-            self.args.random_labels = True
-        self.data_sets = nn.load_data(self.name, self.args.random_labels)
-
-        #self.name_to_save = args.name_to_store + "_" + "_".join([str(i) + '=' + str(params[i]) for i in params])
-        # The weights
-        #self.weights = [[[[None] for k in range(len(self.train_samples))] for j in range(len(self.layers_sizes))] for i in
-        #           range(args.num_of_repeats)] if args.save_ws == 1 else 0
-        #the variance of the gradints
-        #self.var_grads = [[[[None] for k in range(len(self.train_samples))] for j in range(len(self.layers_sizes))] for i in
-        #             range(args.num_of_repeats)] if args.save_grads == 1 else 0
-        self.information = np.zeros(
-            [args.num_of_repeats, len(self.layers_sizes), len(self.train_samples), len(self.epochs_indexes), max_size + 1,
-             2]) if args.calc_information == 1 else 0
-        self.information_estimation = np.zeros(
-            [args.num_of_repeats, len(self.layers_sizes), len(self.train_samples), len(self.epochs_indexes), max_size + 1,
-             2]) if args.calc_information == 1 else 0
-
-        self.ws = [[[[None] for k in range(len(self.train_samples))] for j in range(len(self.layers_sizes))] for i in
-                   range(args.num_of_repeats)]
-
-        self.grads = [[[[None] for k in range(len(self.train_samples))] for j in range(len(self.layers_sizes))] for i in
-                   range(args.num_of_repeats)]
-
-        self.information = [[[[None] for k in range(len(self.train_samples))] for j in range(len(self.layers_sizes))] for i in
-                   range(args.num_of_repeats)]
-
-        self.model = [[[[None] for k in range(len(self.train_samples))] for j in range(len(self.layers_sizes))]
-                            for i in
-                            range(args.num_of_repeats)]
-
-        self.names = [[[[None] for k in range(len(self.train_samples))] for j in range(len(self.layers_sizes))]
-                      for i in
-                      range(args.num_of_repeats)]
-        self.loss_train, self.loss_test,  self.test_error, self.train_error, self.l1_norms, self.l2_norms= \
-            self.create_regular_array(), self.create_regular_array(), self.create_regular_array(), self.create_regular_array(),self.create_regular_array(), \
-            self.create_regular_array()
-
-        params = {'samples_len': len(self.train_samples), 'num_of_disribuation_samples': self.args.num_of_disribuation_samples,
-                  'layersSizes': self.layers_sizes, 'numEphocs': self.args.num_ephocs, 'batch': self.args.batch_size,
-                  'numRepeats': self.args.num_of_repeats, 'numEpochsInds': len(self.epochs_indexes),
-                  'LastEpochsInds': self.epochs_indexes[-1], 'DataName': self.args.data_name, 'learningRate': self.args.learning_rate}
-        self.name_to_save = self.args.name + "_" + "_".join([str(i) + '=' + str(params[i]) for i in params])
-        params['train_samples'], params['CPUs'], params[
-            'directory'],params['epochsInds']  = self.train_samples, NUM_CORES, self.name_to_save,self.epochs_indexes
-        self.params =params
-        self.rand_int = rand_int
-
-
     def run_network(self):
-        if self.args.run_in_parallel == 1:
+        """Train and calculated the network's information"""
+        if self.run_in_parallel:
             results = Parallel(n_jobs=NUM_CORES)(delayed(nn.train_network)
                                                      (self.layers_sizes[j],
-                                                      self.args.num_ephocs, self.args.learning_rate, self.args.batch_size,
-                                                      self.epochs_indexes, self.args.save_grads, self.data_sets, self.args.model_type,
-                                                      self.train_samples,self.args.interval_accuracy_display, self.rand_int)
+                                                      self.num_ephocs, self.learning_rate, self.batch_size,
+                                                      self.epochs_indexes, self.save_grads, self.data_sets, self.activation_function,
+                                                      self.train_samples,self.interval_accuracy_display, self.calc_information,
+                                                      self.calc_information_last, self.num_of_bins,
+                                                      self.interval_information_display, self.save_ws, self.rand_int,self.cov_net)
                                                      for i in range(len(self.train_samples)) for j in
-                                                     range(len(self.layers_sizes)) for k in range(self.args.num_of_repeats))
+                                                     range(len(self.layers_sizes)) for k in range(self.num_of_repeats))
+
         else:
             results = [nn.train_and_calc_inf_network(i, j,k,
                                                      self.layers_sizes[j],
-                                                     self.args.num_ephocs, self.args.learning_rate, self.args.batch_size,
-                                                     self.epochs_indexes, self.args.save_grads, self.data_sets, self.args.model_type,
-                                                     self.train_samples, self.args.interval_accuracy_display, self.args.calc_information,
-                                                     self.args.calc_information_last,
-                                                     self.args.num_of_bins, self.args.interval_information_display, self.args.save_ws,
-                                                     self.rand_int, self.args.cov_net)
+                                                     self.num_ephocs, self.learning_rate, self.batch_size,
+                                                     self.epochs_indexes, self.save_grads, self.data_sets, self.activation_function,
+                                                     self.train_samples, self.interval_accuracy_display, self.calc_information,
+                                                     self.calc_information_last, self.num_of_bins, self.interval_information_display,
+                                                     self.save_ws, self.rand_int, self.cov_net)
                 for i in range(len(self.train_samples))
                            for i in range(len(self.train_samples)) for j in range(len(self.layers_sizes)) for k in
-                           range(self.args.num_of_repeats)]
+                           range(self.num_of_repeats)]
+
         # Extract all the measures and orgainze it
         for i in range(len(self.train_samples)):
             for j in range(len(self.layers_sizes)):
-                for k in range(self.args.num_of_repeats):
+                for k in range(self.num_of_repeats):
+                    index = i * len(self.layers_sizes) * self.num_of_repeats + j * self.num_of_repeats + k
+                    current_network = results[index]
+                    self.networks[k][j][i] = current_network
+                    self.ws[k][j][i] =current_network['ws']
+                    self.information[k][j][i] = current_network['information']
+                    self.grads[k][i][i] = current_network['gradients']
+                    self.test_error[k, j, i, :] = current_network['test_prediction']
+                    self.train_error[k, j, i, :] = current_network['train_prediction']
+                    self.loss_test[k, j ,i, :] =  current_network['loss_test']
+                    self.loss_train[k, j, i, :] =  current_network['loss_train']
 
-                    index = i * len(self.layers_sizes) * self.args.num_of_repeats + j * self.args.num_of_repeats + k
-                    information, ws, self.test_error[k, j, i, :], self.train_error[k, j, i, :], self.loss_test[k, j, i, :], self.loss_train[k,j, i,:], \
-                    model, name, grads = results[index]
-                    self.ws[k][j][i] =ws
-                    self.information[k][j][i] = information
-                    self.model[k][i][i] = model
-                    self.names[k][i][i] = name
-
-                    self.grads[k][i][i] = grads
-
+        self.traind_network = True
 
     def print_information(self):
+        """Print the networks params"""
         for val in self.params:
             if val!='epochsInds':
                 print val, self.params[val]
 
-    def inferance(self, data):
-        current_model = self.model[0][0][0]
-        with tf.Session() as sess:
-            current_model.saver.restore(sess, './'+current_model.save_file)
-            feed_dict = {current_model.x: data}
-            pred = sess.run(current_model.prediction,feed_dict = feed_dict)
-        return pred
-            #print ('prediction -  {0}'.format(sess.run(current_model.prediction,feed_dict = feed_dict)))
 
     def calc_information(self):
-        #self.information = np.array(Parallel(n_jobs=NUM_CORES)(delayed(nn.train_network)
-        self.information =  np.array([inn.get_infomration(self.ws[k][j][i], self.data_sets.data, self.data_sets.labels,
-                                                         self.args.num_of_bins, self.args.interval_information_display, self.epochs_indexes)
+        """Calculate the infomration of the network for all the epochs - only valid if we save the activation values and trained the network"""
+        if self.traind_network and self.save_ws:
+            self.information =  np.array([inn.get_information(self.ws[k][j][i], self.data_sets.data, self.data_sets.labels,
+                                                              self.args.num_of_bins, self.args.interval_information_display, self.epochs_indexes)
+                                         for i in range(len(self.train_samples)) for j in
+                                         range(len(self.layers_sizes)) for k in range(self.args.num_of_repeats)])
+        else:
+            print ('Cant calculate the infomration of the networks!!!')
+
+    def calc_information_last(self):
+        """Calculate the information of the last epoch"""
+        if self.traind_network and self.save_ws:
+            return np.array([inn.get_information([self.ws[k][j][i][-1]], self.data_sets.data, self.data_sets.labels,
+                                                 self.args.num_of_bins, self.args.interval_information_display, self.epochs_indexes)
                                      for i in range(len(self.train_samples)) for j in
                                      range(len(self.layers_sizes)) for k in range(self.args.num_of_repeats)])
 
-    def calc_information_last(self):
-        wsf = self.ws[0][0][0]
-        return np.array([inn.get_infomration([self.ws[k][j][i][-1]], self.data_sets.data, self.data_sets.labels,
-                                                         self.args.num_of_bins, self.args.interval_information_display, self.epochs_indexes)
-                                     for i in range(len(self.train_samples)) for j in
-                                     range(len(self.layers_sizes)) for k in range(self.args.num_of_repeats)])
+    def plot_network(self):
+        str_names = [[self.dir_saved]]
+        mode =2
+        save_name = 'figure'
+        plt_fig.plot_figures(str_names, mode, save_name)

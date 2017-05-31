@@ -11,8 +11,8 @@ def lazy_property(function):
         if not hasattr(self, attribute):
             setattr(self, attribute, function(self))
         return getattr(self, attribute)
-
     return decorator
+
 def _convert_string_dtype(dtype):
     if dtype == 'float16':
         return tf.float16
@@ -51,10 +51,10 @@ def deepnn(x):
     # First convolutional layer - maps one grayscale image to 32 feature maps.
     with tf.name_scope('conv1'):
         with tf.name_scope('weights'):
-            W_conv1 = weight_variable([5, 5, 1, 12])
+            W_conv1 = weight_variable([5, 5, 1, 32])
             variable_summaries(W_conv1)
         with tf.name_scope('biases'):
-            b_conv1 = bias_variable([12])
+            b_conv1 = bias_variable([32])
             variable_summaries(b_conv1)
         with tf.name_scope('activation'):
             input_con1 = conv2d(x_image, W_conv1) + b_conv1
@@ -68,10 +68,10 @@ def deepnn(x):
     with tf.name_scope('conv2'):
         # Second convolutional layer -- maps 32 feature maps to 64.
         with tf.name_scope('weights'):
-            W_conv2 = weight_variable([5, 5, 12, 16])
+            W_conv2 = weight_variable([5, 5, 32, 64])
             variable_summaries(W_conv2)
         with tf.name_scope('biases'):
-            b_conv2 = bias_variable([16])
+            b_conv2 = bias_variable([64])
             variable_summaries(b_conv2)
         with tf.name_scope('activation'):
             input_con2 = conv2d(h_pool1, W_conv2) + b_conv2
@@ -86,12 +86,12 @@ def deepnn(x):
     # is down to 7x7x64 feature maps -- maps this to 1024 features.
     with tf.name_scope('FC1'):
         with tf.name_scope('weights'):
-            W_fc1 = weight_variable([7 * 7 * 16, 400])
+            W_fc1 = weight_variable([7 * 7 * 64, 1024])
             variable_summaries(W_fc1)
         with tf.name_scope('biases'):
-            b_fc1 = bias_variable([84])
+            b_fc1 = bias_variable([1024])
             variable_summaries(b_fc1)
-        h_pool2_flat = tf.reshape(h_pool2, [-1, 7 * 7 * 16])
+        h_pool2_flat = tf.reshape(h_pool2, [-1, 7 * 7 * 64])
         with tf.name_scope('activation'):
             input_fc1 = tf.matmul(h_pool2_flat, W_fc1) + b_fc1
             h_fc1 = tf.nn.relu(input_fc1)
@@ -106,7 +106,7 @@ def deepnn(x):
     # Map the 1024 features to 10 classes, one for each digit
     with tf.name_scope('FC2'):
         with tf.name_scope('weights'):
-            W_fc2 = weight_variable([800, 10])
+            W_fc2 = weight_variable([1024, 10])
             variable_summaries(W_fc2)
         with tf.name_scope('biases'):
             b_fc2 = bias_variable([10])
@@ -185,8 +185,8 @@ def get_scope_variable(name_scope, var, shape=None,initializer = None):
 
 
 class Model:
-
-    def __init__(self,input_size, layerSize, num_of_classes,learning_rate_local = 0.001, save_file = '', model_type=0, cov_net= False):
+    """A class that represent model of network"""
+    def __init__(self,input_size, layerSize, num_of_classes,learning_rate_local = 0.001, save_file = '', activation_function=0, cov_net= False):
         self.covnet =  cov_net
         self.input_size = input_size
         self.layerSize = layerSize
@@ -194,12 +194,11 @@ class Model:
         self.all_layer_sizes = np.insert(self.all_layer_sizes, 0, input_size)
         self.num_of_classes = num_of_classes
         self.num_of_layers = len(layerSize)+1
-
         self.learning_rate_local = learning_rate_local
         self.save_file= save_file
         self.hidden = None
         self.savers = []
-        if model_type ==1:
+        if activation_function ==1:
             self.activation_function = tf.nn.relu
         else:
             self.activation_function = tf.nn.tanh
@@ -209,6 +208,7 @@ class Model:
 
 
     def initilizae_layer(self, name_scope, row_size, col_size,activation_function, last_hidden):
+        #Bulid layer of the network with weights and biases
         weights = get_scope_variable(name_scope=name_scope, var="weights",
                                      shape=[row_size, col_size],
                                      initializer=tf.truncated_normal_initializer(mean=0.0, stddev=1.0 / np.sqrt(
@@ -223,7 +223,6 @@ class Model:
         with tf.variable_scope(name_scope) as scope:
             input = tf.matmul(last_hidden, weights) + biases
             output = activation_function(input, name='output')
-
         self.inputs.append(input)
         self.hidden.append(output)
         return output
@@ -234,9 +233,9 @@ class Model:
 
     @property
     def hidden_layers(self):
+        """The hidden layers of the netowrk"""
         if self.hidden is None:
             self.hidden,self.inputs,self.weights_all,self.biases_all = [], [], [],[]
-
             last_hidden = self.x
             if self.covnet:
                 y_conv, self._drouput, self.hidden,self.inputs = deepnn(self.x)
@@ -248,7 +247,6 @@ class Model:
                     row_size, col_size = self.all_layer_sizes[i - 1], self.all_layer_sizes[i]
                     activation_function = self.activation_function
                     last_hidden = self.initilizae_layer(name_scope, row_size, col_size, activation_function, last_hidden)
-
                 name_scope = 'final_layer'
                 row_size, col_size = self.layerSize[-1], self.num_of_classes
                 activation_function = tf.nn.softmax
@@ -287,8 +285,6 @@ class Model:
 
     @lazy_property
     def cross_entropy(self):
-        #cross_entropy = -tf.reduce_sum(y_ * tf.log(tf.clip_by_value(y_conv, 1e-10, 1.0)))
-
         cross_entropy = tf.reduce_mean(-tf.reduce_sum(self.labels * tf.log(tf.clip_by_value(self.prediction,1e-20, 1.0 )), reduction_indices=[1]))
         tf.summary.scalar('cross_entropy', cross_entropy)
         return cross_entropy
@@ -297,16 +293,8 @@ class Model:
     def save_file(self):
         return self.save_file
 
-    """"
-    @property
-    def saver(self, epoch_index, sess):
-        #saver = tf.train.Saver()
-        #saver.save(sess, self.save_file )
-        #self.savers.append( saver)
-        #return saver
-    """
-
     def inference(self, data):
+        """Return the predication of the network with the given data"""
         with tf.Session() as sess:
             self.saver.restore(sess, './' + self.save_file)
             feed_dict = {self.x: data}
@@ -320,6 +308,7 @@ class Model:
         return pred
 
     def get_layer_with_inference(self, data, layer_index, epoch_index):
+        """Return the layer activation's values with the results of the network"""
         with tf.Session() as sess:
             self.savers[epoch_index].restore(sess, './' + self.save_file +str(epoch_index))
             feed_dict = {self.hidden_layers[layer_index]: data[:,0:self.hidden_layers[layer_index]._shape[1]]}
@@ -327,6 +316,7 @@ class Model:
         return pred, layer_values
 
     def calc_layer_values(self,X, layer_index):
+        """Return the layer's values"""
         with tf.Session() as sess:
             self.savers[-1].restore(sess, './' + self.save_file)
             feed_dict = {self.x: X}
@@ -334,6 +324,7 @@ class Model:
         return layer_values
 
     def update_weights_and_calc_values_temp(self, d_w_i_j, layer_to_perturbe, i,j,X):
+        """Update the weights of the given layer cacl the output and return it to the original values"""
         if layer_to_perturbe+1 >= len(self.hidden_layers):
             scope_name ='softmax_linear'
         else:
@@ -350,17 +341,19 @@ class Model:
         return layer_values
 
     def update_weights(self, d_w0, layer_to_perturbe):
+        """Update the weights' values of the given layer"""
         weights = get_scope_variable("hidden" +str(layer_to_perturbe), "weights", shape=None, initializer=None)
         session = tf.get_default_session()
         weights_values = weights.eval(session=session )
         set_value(weights, weights_values +d_w0)
 
-
     def get_wights_size(self, layer_to_perturbe):
+        """Return the size of the given layer"""
         weights = get_scope_variable("hidden" + str(layer_to_perturbe), "weights", shape=None, initializer=None)
-
         return weights._initial_value.shape[1].value, weights._initial_value.shape[0].value
+
     def get_layer_input(self, layer_to_perturbe,X):
+        """Return the input of the given layer for the given data"""
         session = tf.get_default_session()
         inputs = self.inputs[layer_to_perturbe]
         feed_dict = {self.x: X}

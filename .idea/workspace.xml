@@ -2,7 +2,205 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5d459e7b-2511-4f71-bbdb-7145af55ddcb" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/MNIST_data/t10k-images-idx3-ubyte.gz" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/MNIST_data/t10k-labels-idx1-ubyte.gz" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/MNIST_data/train-images-idx3-ubyte.gz" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/MNIST_data/train-labels-idx1-ubyte.gz" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-0.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-0.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-0.meta" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-1.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-1.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-10.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-10.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-11.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-11.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-12.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-12.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-13.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-13.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-14.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-14.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-15.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-15.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-16.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-16.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-17.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-17.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-18.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-18.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-19.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-19.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-2.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-2.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-20.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-20.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-21.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-21.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-22.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-22.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-23.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-23.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-24.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-24.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-25.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-25.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-26.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-26.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-27.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-27.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-28.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-28.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-29.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-29.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-3.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-3.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-30.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-30.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-31.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-31.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-32.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-32.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-33.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-33.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-34.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-34.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-35.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-35.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-36.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-36.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-37.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-37.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-38.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-38.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-39.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-39.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-4.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-4.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-40.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-40.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-41.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-41.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-42.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-42.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-43.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-43.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-44.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-44.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-45.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-45.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-46.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-46.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-47.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-47.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-48.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-48.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-49.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-49.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-5.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-5.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-50.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-50.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-51.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-51.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-52.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-52.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-53.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-53.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-54.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-54.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-55.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-55.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-56.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-56.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-57.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-57.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-58.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-58.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-59.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-59.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-6.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-6.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-60.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-60.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-61.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-61.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-62.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-62.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-63.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-63.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-64.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-64.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-65.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-65.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-66.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-66.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-67.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-67.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-68.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-68.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-69.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-69.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-7.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-7.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-70.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-70.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-71.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-71.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-72.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-72.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-73.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-73.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-74.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-74.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-75.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-75.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-76.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-76.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-77.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-77.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-78.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-78.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-79.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-79.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-8.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-8.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-80.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-80.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-81.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-81.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-82.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-82.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-83.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-83.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-84.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-84.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-85.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-85.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-9.data-00000-of-00001" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/net_0_0_0_0-9.index" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/idnns/information/mutual_info_estimation.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/idnns/plots/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/idnns/plots/plot_figures.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/main.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/net_logs/checkpoint" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/idnns/information_process.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/idnns/log_gradient2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/idnns/model_conv.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/idnns/test22.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test.py" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/idnns/entropy_estimators.py" afterPath="$PROJECT_DIR$/idnns/information/entropy_estimators.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/idnns/information/information_process.py" afterPath="$PROJECT_DIR$/idnns/information/information_process.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/idnns/information/information_utilities.py" afterPath="$PROJECT_DIR$/idnns/information/information_utilities.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/idnns/information_network.py" afterPath="$PROJECT_DIR$/idnns/information_network.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/idnns/model.py" afterPath="$PROJECT_DIR$/idnns/model.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/idnns/network.py" afterPath="$PROJECT_DIR$/idnns/network.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jobs/g_layersSizes=[[10, 7, 5, 4, 4, 3]]_LastEpochsInds=9998_numRepeats=20_batch=3563_DataName=var_u_numEphocs=10000_learningRate=0.0002_numEpochsInds=964_samples=1_num_of_disribuation_samples=1/main_fas.py" afterPath="$PROJECT_DIR$/jobs/g_layersSizes=[[10, 7, 5, 4, 4, 3]]_LastEpochsInds=9998_numRepeats=20_batch=3563_DataName=var_u_numEphocs=10000_learningRate=0.0002_numEpochsInds=964_samples=1_num_of_disribuation_samples=1/main_fas.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jobs/r_DataName=MNIST_samples_len=1_layersSizes=[[400, 200, 150, 60, 50, 40, 30]]_learningRate=0.0002_numEpochsInds=677_numRepeats=1_LastEpochsInds=1399_num_of_disribuation_samples=1_numEphocs=1400_batch=2544/main_fas.py" afterPath="$PROJECT_DIR$/jobs/r_DataName=MNIST_samples_len=1_layersSizes=[[400, 200, 150, 60, 50, 40, 30]]_learningRate=0.0002_numEpochsInds=677_numRepeats=1_LastEpochsInds=1399_num_of_disribuation_samples=1_numEphocs=1400_batch=2544/main_fas.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jobs/r_DataName=MNIST_samples_len=1_layersSizes=[[400, 200, 150, 80, 70, 60, 50, 40, 35, 30]]_learningRate=0.0002_numEpochsInds=2_numRepeats=1_LastEpochsInds=1_num_of_disribuation_samples=1_numEphocs=2_batch=2544/main_fas.py" afterPath="$PROJECT_DIR$/jobs/r_DataName=MNIST_samples_len=1_layersSizes=[[400, 200, 150, 80, 70, 60, 50, 40, 35, 30]]_learningRate=0.0002_numEpochsInds=2_numRepeats=1_LastEpochsInds=1_num_of_disribuation_samples=1_numEphocs=2_batch=2544/main_fas.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jobs/r_DataName=MNIST_samples_len=1_layersSizes=[[500, 400, 200, 150, 80, 70, 50, 30]]_learningRate=0.0002_numEpochsInds=2_numRepeats=1_LastEpochsInds=1_num_of_disribuation_samples=1_numEphocs=2_batch=2544/main_fas.py" afterPath="$PROJECT_DIR$/jobs/r_DataName=MNIST_samples_len=1_layersSizes=[[500, 400, 200, 150, 80, 70, 50, 30]]_learningRate=0.0002_numEpochsInds=2_numRepeats=1_LastEpochsInds=1_num_of_disribuation_samples=1_numEphocs=2_batch=2544/main_fas.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/jobs/y_layersSizes=[[10, 7, 5, 4, 3]]_LastEpochsInds=9998_numRepeats=30_batch=3563_DataName=g1_numEphocs=10000_learningRate=0.00015_numEpochsInds=964_samples=1_num_of_disribuation_samples=1/main_fas.py" afterPath="$PROJECT_DIR$/jobs/y_layersSizes=[[10, 7, 5, 4, 3]]_LastEpochsInds=9998_numRepeats=30_batch=3563_DataName=g1_numEphocs=10000_learningRate=0.00015_numEpochsInds=964_samples=1_num_of_disribuation_samples=1/main_fas.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -17,7 +215,8 @@
     <SUITE FILE_PATH="coverage/IDNNs$test_grad.coverage" NAME="test_grad Coverage Results" MODIFIED="1496072883379" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/IDNNs$test.coverage" NAME="test Coverage Results" MODIFIED="1496157869916" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/IDNNs$plot_figures.coverage" NAME="plot_figures Coverage Results" MODIFIED="1496082979970" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/IDNNs$RELU.coverage" NAME="RELU Coverage Results" MODIFIED="1496158357840" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/IDNNs$RELU.coverage" NAME="RELU Coverage Results" MODIFIED="1496236933018" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/IDNNs$mnist.coverage" NAME="mnist Coverage Results" MODIFIED="1496236568715" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -28,31 +227,124 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="misc.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/idnns/.idea/misc.xml">
+      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="105">
+              <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test.py">
+      <file leaf-file-name="information_process.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/idnns/information/information_process.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+            <state relative-caret-position="-179">
+              <caret line="7" column="33" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="7" selection-end-column="33" />
+              <folding>
+                <element signature="e#0#22#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="network.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/idnns/network.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-393">
+              <caret line="146" column="63" lean-forward="false" selection-start-line="146" selection-start-column="63" selection-end-line="146" selection-end-column="63" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="information_network.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="information_network.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/idnns/information_network.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="259" column="0" lean-forward="false" selection-start-line="259" selection-start-column="0" selection-end-line="259" selection-end-column="0" />
+            <state relative-caret-position="635">
+              <caret line="120" column="15" lean-forward="true" selection-start-line="120" selection-start-column="15" selection-end-line="120" selection-end-column="15" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ops.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/python/framework/ops.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="181">
+              <caret line="2328" column="0" lean-forward="false" selection-start-line="2328" selection-start-column="0" selection-end-line="2328" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="op_def_library.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/python/framework/op_def_library.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="303">
+              <caret line="762" column="0" lean-forward="false" selection-start-line="762" selection-start-column="0" selection-end-line="762" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="base.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/contrib/learn/python/learn/datasets/base.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="339">
+              <caret line="207" column="0" lean-forward="false" selection-start-line="207" selection-start-column="0" selection-end-line="207" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="mnist.py" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/contrib/learn/python/learn/datasets/mnist.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="166">
+              <caret line="209" column="0" lean-forward="false" selection-start-line="209" selection-start-column="0" selection-end-line="209" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="plot_figures.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/idnns/plots/plot_figures.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="353">
+              <caret line="473" column="4" lean-forward="false" selection-start-line="473" selection-start-column="4" selection-end-line="473" selection-end-column="4" />
+              <folding>
+                <element signature="e#6416#7280#0" expanded="false" />
+                <element signature="e#7366#8314#0" expanded="false" />
+                <element signature="e#8595#9742#0" expanded="false" />
+                <element signature="e#9334#9742#0" expanded="false" />
+                <element signature="e#9992#11414#0" expanded="false" />
+                <element signature="e#11501#12097#0" expanded="false" />
+                <element signature="e#12124#12777#0" expanded="false" />
+                <element signature="e#12822#14911#0" expanded="false" />
+                <element signature="e#14987#16786#0" expanded="false" />
+                <element signature="e#16912#17435#0" expanded="false" />
+                <element signature="e#23166#23425#0" expanded="false" />
+                <element signature="e#23464#23603#0" expanded="false" />
+                <element signature="e#23628#23970#0" expanded="false" />
+                <element signature="e#24001#25480#0" expanded="false" />
+                <element signature="e#25655#27057#0" expanded="false" />
+                <element signature="e#27132#27739#0" expanded="false" />
+                <element signature="e#27774#33805#0" expanded="false" />
+                <element signature="e#34567#35683#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="model.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/idnns/model.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="283">
+              <caret line="355" column="65" lean-forward="false" selection-start-line="355" selection-start-column="65" selection-end-line="355" selection-end-column="65" />
               <folding />
             </state>
           </provider>
@@ -69,36 +361,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>calc_infomration_all_neruons</find>
-      <find>update_line_each_neuron</find>
-      <find>movi</find>
-      <find>processInputIter</find>
-      <find>processInput</find>
-      <find>set_a</find>
-      <find>set_</find>
-      <find>set_x</find>
-      <find>res</find>
-      <find>self.grads</find>
-      <find>var_grad</find>
-      <find>set_ax</find>
-      <find>var_grads</find>
-      <find>calc_information_from_mat</find>
-      <find>labels</find>
-      <find>correct_prediction</find>
-      <find>NUM_CLASSES</find>
-      <find>train_and_calc_inf_network</find>
-      <find>calc_one_iteration</find>
-      <find>all_layer_sizes</find>
-      <find>print</find>
-      <find>adjustAxes</find>
-      <find>ws</find>
-      <find>initilizae_layer</find>
       <find>restu</find>
       <find>save</find>
-      <find>train_network</find>
-      <find>calc_information</find>
       <find>mutual_information_2d</find>
       <find>calc_varitional_information</find>
+      <find>IMAGE_SIZE</find>
+      <find>input_data</find>
+      <find>NUM_CLASSES</find>
+      <find>variable_summaries</find>
+      <find>train_and_calc_inf_network</find>
+      <find>process</find>
+      <find>process_and_calc_information_inner</find>
+      <find>process_and_calc_information_inner_new</find>
+      <find>process_input_layer</find>
+      <find>processInputProb</find>
+      <find>calcXI</find>
+      <find>Calculate</find>
+      <find>calc_condtion_entropy</find>
+      <find>calc_probs</find>
+      <find>rand_int</find>
+      <find>load_figures</find>
+      <find>_convert_string_dtype</find>
+      <find>calcEncoderDecoder</find>
+      <find>plot_eigs_update</find>
+      <find>plot_eigs_movie</find>
+      <find>print</find>
+      <find>get_data</find>
+      <find>getProb</find>
+      <find>set_value</find>
+      <find>train_network</find>
+      <find>calc_information</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -112,7 +404,6 @@
         <option value="$PROJECT_DIR$/idnns/information/information.py" />
         <option value="$PROJECT_DIR$/idnns/information/__init__.py" />
         <option value="$PROJECT_DIR$/revereseAnnealing_old.py" />
-        <option value="$PROJECT_DIR$/idnns/information/information_utilities.py" />
         <option value="$PROJECT_DIR$/idnns/revereseAnnealing.py" />
         <option value="$PROJECT_DIR$/RunReverseAnnelaing.py" />
         <option value="$PROJECT_DIR$/../IB/RunReverseAnnelaing.py" />
@@ -125,12 +416,16 @@
         <option value="$PROJECT_DIR$/var_alg.py" />
         <option value="$PROJECT_DIR$/idnns/model_conv.py" />
         <option value="$PROJECT_DIR$/idnns/__init__.py" />
+        <option value="$PROJECT_DIR$/plot_figures.py" />
+        <option value="$PROJECT_DIR$/mutual_info.py" />
+        <option value="$PROJECT_DIR$/idnns/information/information_utilities.py" />
+        <option value="$PROJECT_DIR$/idnns/plots/__init__.py" />
+        <option value="$PROJECT_DIR$/idnns/plots/plot_figures.py" />
+        <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/idnns/information/information_process.py" />
         <option value="$PROJECT_DIR$/idnns/information_network.py" />
         <option value="$PROJECT_DIR$/idnns/model.py" />
         <option value="$PROJECT_DIR$/idnns/network.py" />
-        <option value="$PROJECT_DIR$/plot_figures.py" />
-        <option value="$PROJECT_DIR$/mutual_info.py" />
-        <option value="$PROJECT_DIR$/idnns/information/information_process.py" />
       </list>
     </option>
   </component>
@@ -175,6 +470,70 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IDNNs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IDNNs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="idnns" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IDNNs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IDNNs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="idnns" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="plots" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IDNNs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IDNNs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="data" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IDNNs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="IDNNs" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="data" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MNIST_data" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -187,11 +546,15 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
+    <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/data" />
+      <recent name="$PROJECT_DIR$/idnns/plots" />
+      <recent name="$PROJECT_DIR$/idnns/information" />
       <recent name="$PROJECT_DIR$" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/idnns/information" />
+      <recent name="$PROJECT_DIR$/data" />
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
@@ -240,7 +603,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="IDNNs" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
       <option name="PARAMETERS" value="-cinf=1 -r=1 -name=usa88 -b=40560 -n=6 -ns=120 -e=2 -iad=1 -iid=1 -dna=MNIST -l=0.002  -cov=1 -nbins=5" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -295,7 +658,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="IDNNs1" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
       <option name="PARAMETERS" value="-cinf=1 -mtype=0 -iad=10 -e=5000 -r=1 -cov=0 -ns=50" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -496,46 +859,8 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="IDNNs" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
       <option name="PARAMETERS" value="-cinf=1  -b=3590 -e=50 -r=1 -lm=1 -name=wq" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="RELU" type="PythonConfigurationType" factoryName="Python">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/anaconda/bin/python" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="IDNNs" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
-      <option name="PARAMETERS" value="-cinf=1 -mtype=0 -iad=1000 -r=1 -cov=0  -ns=100 -e=30000 -b=128 -name=random_labels8 -i=[5]  -n=1 -l=0.0005 -rl=1" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="mnist" type="PythonConfigurationType" factoryName="Python">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="$USER_HOME$/anaconda/bin/python" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="IDNNs" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
-      <option name="PARAMETERS" value="-cinf=1 -r=1 -name=usa88 -b=8560 -n=6 -ns=120 -e=2 -iad=1 -iid=1 -dna=MNIST -l=0.002  -cov=0 -nbins=10 -i=[5]" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <method />
@@ -553,17 +878,55 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="Information_DNNs" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
       <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="mnist" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda/bin/python" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Information_DNNs" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="-af=1 -r=1 -name=usa88 -b=8560 -n=6 -ns=120 -e=5 -cov=True -iad=1 -iid=1 -dna=MNIST -l=0.002  -nbins=10 -i=[80]" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="RELU" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="$USER_HOME$/anaconda/bin/python" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Information_DNNs" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="-r=1  -ns=100 -e=5000 -b=512 -name=random_labels8 -i=[80] -n=1" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <method />
     </configuration>
     <list size="9">
       <item index="0" class="java.lang.String" itemvalue="Python.test_grad" />
-      <item index="1" class="java.lang.String" itemvalue="Python.RELU" />
+      <item index="1" class="java.lang.String" itemvalue="Python.Unnamed" />
       <item index="2" class="java.lang.String" itemvalue="Python.mnist" />
-      <item index="3" class="java.lang.String" itemvalue="Python.Unnamed" />
+      <item index="3" class="java.lang.String" itemvalue="Python.RELU" />
       <item index="4" class="java.lang.String" itemvalue="Python.plot_figures" />
       <item index="5" class="java.lang.String" itemvalue="Python.test1" />
       <item index="6" class="java.lang.String" itemvalue="Python.var_alg" />
@@ -620,7 +983,21 @@
       <option name="project" value="LOCAL" />
       <updated>1496158071871</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="adding covnet support">
+      <created>1496158630744</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1496158630744</updated>
+    </task>
+    <task id="LOCAL-00003" summary="adding covnet support">
+      <created>1496158661366</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1496158661366</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -646,16 +1023,17 @@
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="946" extended-state="6" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25335777" sideWeight="0.4938918" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290398" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3290398" sideWeight="0.502442" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3676815" sideWeight="0.495116" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3290398" sideWeight="0.497558" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3559719" sideWeight="0.53663003" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33138174" sideWeight="0.46825397" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290398" sideWeight="0.497558" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23419204" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290398" sideWeight="0.496337" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3559719" sideWeight="0.497558" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25335777" sideWeight="0.4938918" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290398" sideWeight="0.485348" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3559719" sideWeight="0.46336997" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25030527" sideWeight="0.5061082" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -664,7 +1042,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290398" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -706,14 +1083,49 @@
           <option name="timeStamp" value="126" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/idnns/plots/plot_figures.py</url>
+          <line>471</line>
+          <option name="timeStamp" value="575" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/idnns/plots/plot_figures.py</url>
+          <line>335</line>
+          <option name="timeStamp" value="577" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/idnns/plots/plot_figures.py</url>
+          <line>79</line>
+          <option name="timeStamp" value="580" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/idnns/plots/plot_figures.py</url>
+          <line>350</line>
+          <option name="timeStamp" value="581" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/idnns/plots/plot_figures.py</url>
+          <line>401</line>
+          <option name="timeStamp" value="582" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/idnns/plots/plot_figures.py</url>
+          <line>38</line>
+          <option name="timeStamp" value="583" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/idnns/information_network.py</url>
-          <line>128</line>
-          <option name="timeStamp" value="190" />
+          <line>216</line>
+          <option name="timeStamp" value="584" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/idnns/model.py</url>
+          <line>239</line>
+          <option name="timeStamp" value="589" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/idnns/information_network.py</url>
           <line>135</line>
-          <option name="timeStamp" value="413" />
+          <option name="timeStamp" value="590" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -726,72 +1138,15 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="566" />
+      <option name="time" value="591" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_bundle/pydev_monkey_qt.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="164">
-          <caret line="70" column="0" lean-forward="false" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/joblib/pool.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="257" column="0" lean-forward="false" selection-start-line="257" selection-start-column="0" selection-end-line="257" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/python/ops/gen_math_ops.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="1332" column="0" lean-forward="false" selection-start-line="1332" selection-start-column="0" selection-end-line="1332" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/python/ops/gradients_impl.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="458" column="0" lean-forward="false" selection-start-line="458" selection-start-column="0" selection-end-line="458" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/python/framework/dtypes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="582" column="0" lean-forward="false" selection-start-line="582" selection-start-column="0" selection-end-line="582" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/python/training/adam.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
-          <caret line="112" column="0" lean-forward="false" selection-start-line="112" selection-start-column="0" selection-end-line="112" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/python/training/optimizer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="146">
           <caret line="278" column="0" lean-forward="false" selection-start-line="278" selection-start-column="0" selection-end-line="278" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/idnns/information/information_utilities.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="76" lean-forward="false" selection-start-line="22" selection-start-column="64" selection-end-line="22" selection-end-column="76" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -882,13 +1237,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/scipy/io/matlab/mio.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/python/ops/gen_array_ops.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
@@ -896,31 +1244,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/python/framework/op_def_library.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="762" column="0" lean-forward="false" selection-start-line="762" selection-start-column="0" selection-end-line="762" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/python/ops/array_ops.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
           <caret line="1501" column="0" lean-forward="false" selection-start-line="1501" selection-start-column="0" selection-end-line="1501" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/idnns/model_conv.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-70">
-          <caret line="239" column="14" lean-forward="false" selection-start-line="239" selection-start-column="0" selection-end-line="240" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/python/framework/common_shapes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="675" column="0" lean-forward="false" selection-start-line="675" selection-start-column="0" selection-end-line="675" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -980,25 +1307,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/python/framework/ops.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42090">
-          <caret line="2834" column="0" lean-forward="false" selection-start-line="2834" selection-start-column="0" selection-end-line="2834" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/numpy/lib/twodim_base.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2595">
           <caret line="179" column="0" lean-forward="false" selection-start-line="179" selection-start-column="0" selection-end-line="179" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/python/client/session.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13890">
-          <caret line="943" column="0" lean-forward="false" selection-start-line="943" selection-start-column="0" selection-end-line="943" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1011,32 +1323,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/idnns/network.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
-          <caret line="310" column="16" lean-forward="false" selection-start-line="310" selection-start-column="16" selection-end-line="310" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/plot_figures.py" />
     <entry file="file://$PROJECT_DIR$/mutual_info.py" />
-    <entry file="file://$PROJECT_DIR$/idnns/information/information_process.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="504" column="77" lean-forward="false" selection-start-line="504" selection-start-column="77" selection-end-line="504" selection-end-column="77" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/idnns/model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="267" column="42" lean-forward="false" selection-start-line="267" selection-start-column="42" selection-end-line="267" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/numpy/core/numeric.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="359">
@@ -1053,18 +1341,177 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test.py">
+    <entry file="file://$PROJECT_DIR$/source/r">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idnns/model_conv.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="239" column="14" lean-forward="false" selection-start-line="239" selection-start-column="0" selection-end-line="240" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/python/client/session.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="964" column="0" lean-forward="false" selection-start-line="964" selection-start-column="0" selection-end-line="964" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/scipy/io/matlab/mio.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="57" column="0" lean-forward="false" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/python/framework/common_shapes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="173">
+          <caret line="609" column="0" lean-forward="false" selection-start-line="609" selection-start-column="0" selection-end-line="609" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idnns/information/information_utilities.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="69">
+          <caret line="31" column="14" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idnns/information/entropy_estimators.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1086">
+          <caret line="182" column="8" lean-forward="false" selection-start-line="182" selection-start-column="8" selection-end-line="182" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idnns/information/mutual_info_estimation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="102" column="0" lean-forward="false" selection-start-line="102" selection-start-column="0" selection-end-line="102" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idnns/plots/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idnns/plots/plot_figures.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="353">
+          <caret line="473" column="4" lean-forward="false" selection-start-line="473" selection-start-column="4" selection-end-line="473" selection-end-column="4" />
+          <folding>
+            <element signature="e#6416#7280#0" expanded="false" />
+            <element signature="e#7366#8314#0" expanded="false" />
+            <element signature="e#8595#9742#0" expanded="false" />
+            <element signature="e#9334#9742#0" expanded="false" />
+            <element signature="e#9992#11414#0" expanded="false" />
+            <element signature="e#11501#12097#0" expanded="false" />
+            <element signature="e#12124#12777#0" expanded="false" />
+            <element signature="e#12822#14911#0" expanded="false" />
+            <element signature="e#14987#16786#0" expanded="false" />
+            <element signature="e#16912#17435#0" expanded="false" />
+            <element signature="e#23166#23425#0" expanded="false" />
+            <element signature="e#23464#23603#0" expanded="false" />
+            <element signature="e#23628#23970#0" expanded="false" />
+            <element signature="e#24001#25480#0" expanded="false" />
+            <element signature="e#25655#27057#0" expanded="false" />
+            <element signature="e#27132#27739#0" expanded="false" />
+            <element signature="e#27774#33805#0" expanded="false" />
+            <element signature="e#34567#35683#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idnns/information/information_process.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-179">
+          <caret line="7" column="33" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="7" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/contrib/learn/python/learn/datasets/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="339">
+          <caret line="207" column="0" lean-forward="false" selection-start-line="207" selection-start-column="0" selection-end-line="207" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/contrib/learn/python/learn/datasets/mnist.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="166">
+          <caret line="209" column="0" lean-forward="false" selection-start-line="209" selection-start-column="0" selection-end-line="209" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/python/framework/ops.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="2328" column="0" lean-forward="false" selection-start-line="2328" selection-start-column="0" selection-end-line="2328" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/anaconda/lib/python2.7/site-packages/tensorflow/python/framework/op_def_library.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="303">
+          <caret line="762" column="0" lean-forward="false" selection-start-line="762" selection-start-column="0" selection-end-line="762" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idnns/model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="355" column="65" lean-forward="false" selection-start-line="355" selection-start-column="65" selection-end-line="355" selection-end-column="65" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/idnns/information_network.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="259" column="0" lean-forward="false" selection-start-line="259" selection-start-column="0" selection-end-line="259" selection-end-column="0" />
+        <state relative-caret-position="635">
+          <caret line="120" column="15" lean-forward="true" selection-start-line="120" selection-start-column="15" selection-end-line="120" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/idnns/network.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-393">
+          <caret line="146" column="63" lean-forward="false" selection-start-line="146" selection-start-column="63" selection-end-line="146" selection-end-column="63" />
           <folding />
         </state>
       </provider>
