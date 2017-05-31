@@ -1,7 +1,7 @@
 # IDNNs
 ## Description
 IDNNs is a python library that implements training and calculating of information in deep neural networks [\[Shwartz-Ziv & Tishby, 2017\]](#IDNNs) in TensorFlow. The libary allows to investigate how networks look on the information plane and how it changed during the learning.
-<img src="https://ravidziv.github.io/IDNNs/compare_percent_mnist_5_AND_85_PERCENT_old.JPG" width="1000px"/>
+<img src="https://github.com/ravidziv/IDNNs/blob/master/compare_percent_mnist_5_AND_85_PERCENT_old.JPG" width="1000px"/>
 
 ## Prerequisites
 - tensorflow r1.0 or higher version
