@@ -14,20 +14,8 @@ import os
 import matplotlib.animation as animation
 import math
 import os.path
-
-def adjustAxes(axes,axis_font,title_str, x_ticks, y_ticks, x_lim, y_lim, set_xlabel, set_ylabel, x_label='', y_label=''):
-    """Organize the axes of the given figure"""
-    axes.set_xlim(x_lim)
-    axes.set_ylim(y_lim)
-    axes.set_title(title_str, fontsize=axis_font + 2)
-    axes.tick_params(axis='y', labelsize=axis_font)
-    axes.tick_params(axis='x', labelsize=axis_font)
-    axes.set_xticks(x_ticks)
-    axes.set_yticks(y_ticks)
-    if set_xlabel:
-        axes.set_xlabel(x_label)
-    if set_ylabel:
-        axes.set_ylabels(y_label)
+import plot_utilities as plt_ut
+LAYERS_COLORS  = ['red', 'blue', 'green', 'yellow', 'pink', 'orange']
 
 def plot_all_epochs(gen_data, I_XT_array, I_TY_array, axes, epochsInds, f, index_i, index_j, size_ind,
                     font_size, y_ticks, x_ticks, colorbar_axis, title_str, axis_font, bar_font, save_name, plot_error = True,index_to_emphasis=1000):
@@ -44,6 +32,9 @@ def plot_all_epochs(gen_data, I_XT_array, I_TY_array, axes, epochsInds, f, index
         for i in range(len(fig_data)):
             ax1.plot(epochsInds, fig_data[i],':', linewidth = 3 , label = fig_strs[i])
         ax1.legend(loc='best')
+    f = plt.figure(figsize=(12, 8))
+    axes = f.add_subplot(111)
+    axes = np.array([[axes]])
 
     I_XT_array = np.squeeze(I_XT_array)
     I_TY_array = np.squeeze(I_TY_array)
@@ -69,29 +60,18 @@ def plot_all_epochs(gen_data, I_XT_array, I_TY_array, axes, epochsInds, f, index
         else:
                 axes[index_i, index_j].plot(XT[:], TY[:], marker='o', linestyle='-', markersize=12, markeredgewidth=0.01, linewidth=0.2,
                                 color=colors[int(epochsInds[index_in_range])])
-    #If we are in buttom sub-figure
-    if index_i ==axes.shape[0]-1:
-        axes[index_i, index_j].set_xlabel('$I(X;T)$', fontsize=font_size)
-    #If we are in right sub-figure
-    if index_j ==0:
-        axes[index_i, index_j].set_ylabel('$I(T;Y)$', fontsize=font_size)
-    #adjustAxes(axes[index_i, index_j], axis_font, title_str, x_ticks, y_ticks)
+    plt_ut.adjustAxes(axes[index_i, index_j], axis_font=axis_font, title_str=title_str, x_ticks=x_ticks,
+                      y_ticks=y_ticks, x_lim=[0,25.1], y_lim=None,
+                      set_xlabel=index_i == axes.shape[0] - 1, set_ylabel=index_j == 0, x_label='$I(X;T)$',
+                      y_label='$I(T;Y)$', set_xlim=False,
+                      set_ylim=False, set_ticks=True, label_size=font_size)
     #Save the figure and add color bar
     if index_i ==axes.shape[0]-1 and index_j ==axes.shape[1]-1:
-        sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(vmin=0, vmax=1))
-        sm._A = []
-        cbar_ax = f.add_axes(colorbar_axis)
-        cbar = f.colorbar(sm, ticks=[], cax=cbar_ax)
-        cbar.ax.tick_params(labelsize=bar_font)
-        cbar.set_label('Epochs', size=bar_font)
-        cbar.ax.text(0.5, -0.01, '0', transform=cbar.ax.transAxes,
-                     va='top', ha='center', size=bar_font)
-        cbar.ax.text(0.5, 1.0, str(epochsInds[-1]), transform=cbar.ax.transAxes,
-                     va='bottom', ha='center', size=bar_font)
+        plt_ut.create_color_bar(f, cmap, colorbar_axis, bar_font, epochsInds,title='Epochs')
         f.savefig(save_name+'.jpg', dpi=500, format='jpg')
 
 
-def plot_by_training_samples(I_XT_array, I_TY_array, axes, epochsInds, f, index_i, index_j, size_ind, font_size, y_ticks, x_ticks, colorbar_axis, title_str, axis_font, bar_font, save_name):
+def plot_by_training_samples(I_XT_array, I_TY_array, axes, epochsInds, f, index_i, index_j, size_ind, font_size, y_ticks, x_ticks, colorbar_axis, title_str, axis_font, bar_font, save_name, samples_labels):
     """Print the final epoch of all the diffrenet training samples size """
     max_index = size_ind if size_ind!=-1 else I_XT_array.shape[2]-1
     cmap = plt.get_cmap('gnuplot')
@@ -106,24 +86,13 @@ def plot_by_training_samples(I_XT_array, I_TY_array, axes, epochsInds, f, index_
                 TY.append(np.mean(I_TY_array[:, -1, index_in_range,nums_epoch, layer_index], axis=0))
         axes[index_i, index_j].plot(XT, TY, marker='o', linestyle='-', markersize=12, markeredgewidth=0.2, linewidth=0.5,
                          color=colors[index_in_range])
-    if index_i == axes.shape[0] - 1:
-        axes[index_i, index_j].set_xlabel('$I(X;T)$', fontsize=font_size)
-    adjustAxes(axes[index_i, index_j], axis_font, title_str, x_ticks, y_ticks)
-    if index_j == 0:
-        axes[index_i, index_j].set_ylabel('$I(T;Y)$', fontsize=font_size)
+    plt_ut.adjustAxes( axes[index_i, index_j], axis_font = axis_font, title_str = title_str, x_ticks = x_ticks, y_ticks = y_ticks, x_lim = None, y_lim = None,
+    set_xlabel = index_i == axes.shape[0] - 1, set_ylabel = index_j == 0, x_label = '$I(X;T)$', y_label =  '$I(T;Y)$', set_xlim = True,
+                       set_ylim = True, set_ticks = True,label_size =font_size )
     #Create color bar and save it
     if index_i == axes.shape[0] - 1 and index_j == axes.shape[1] - 1:
-        sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(vmin=0, vmax=1))
-        sm._A = []
-        cbar_ax = f.add_axes(colorbar_axis)
-        cbar = f.colorbar(sm, ticks=[], cax=cbar_ax)
-        cbar.ax.tick_params(labelsize=bar_font)
-        cbar.set_label('Training Data', size=bar_font)
-        cbar.ax.text(0.5, -0.01, '3%', transform=cbar.ax.transAxes,
-                     va='top', ha='center', size=bar_font)
-        cbar.ax.text(0.5, 1.0, '85%', transform=cbar.ax.transAxes,
-                     va='bottom', ha='center', size=bar_font)
-        f.savefig(save_name + '.JPG', dpi=150, format='JPG')
+        plt_ut.create_color_bar(f, cmap, colorbar_axis, bar_font, epochsInds,title='Training Data')
+        f.savefig(save_name + '.jpg', dpi=150, format='jpg')
 
 def calc_velocity(data, epochs):
     """Calculate the velocity (both in X and Y) for each layer"""
@@ -144,7 +113,7 @@ def calc_velocity(data, epochs):
 
 def update_line_specipic_points(nums, data, axes, to_do, font_size, axis_font):
     """Update the lines in the axes for snapshot of the whole process"""
-    colors = ['red', 'blue', 'green', 'yellow', 'pink', 'orange']
+    colors =LAYERS_COLORS
     x_ticks = [0, 2, 4, 6, 8, 10]
     #Go over all the snapshot
     for i in range(len(nums)):
@@ -152,16 +121,9 @@ def update_line_specipic_points(nums, data, axes, to_do, font_size, axis_font):
         #Plot the right layer
         for layer_num in range(data.shape[3]):
             axes[i].scatter(data[0, :, num, layer_num], data[1, :, num, layer_num], color = colors[layer_num], s = 105,edgecolors = 'black',alpha = 0.85)
-        axes[i].set_xlim([0, 12.2])
-        axes[i].set_ylim([0, 1.03])
-        axes[i].set_xticks(x_ticks)
-        axes[i].tick_params(axis='x', labelsize=axis_font)
-        if to_do[i][0]:
-            axes[i].set_xlabel('$I(X;T)$', fontsize=font_size)
-            axes[i].tick_params(axis='x', labelsize=axis_font)
-        if to_do[i][1]:
-            axes[i].set_ylabel('$I(T;Y)$', fontsize=font_size)
-            axes[i].tick_params(axis='y',labelsize=axis_font)
+        plt_ut.adjustAxes(axes[i], axis_font=axis_font, title_str='', x_ticks=x_ticks, y_ticks=[], x_lim=None, y_lim=None,
+                  set_xlabel=to_do[i][0], set_ylabel=to_do[i][1], x_label='$I(X;T)$', y_label='$I(T;Y)$', set_xlim=True, set_ylim=True,
+                  set_ticks=True, label_size=font_size)
 
 def update_line_each_neuron(num, print_loss, Ix, axes, Iy, train_data, accuracy_test, epochs_bins, loss_train_data, loss_test_data, colors, epochsInds,
                             font_size = 18, axis_font = 16, x_lim = [0,12.2], y_lim=[0, 1.08],x_ticks = [], y_ticks = []):
@@ -175,7 +137,7 @@ def update_line_each_neuron(num, print_loss, Ix, axes, Iy, train_data, accuracy_
         for net_ind in range(Ix.shape[0]):
             axes[0].scatter(Ix[net_ind,num, layer_num], Iy[net_ind,num, layer_num], color = colors[layer_num], s = 35,edgecolors = 'black',alpha = 0.85)
     title_str = 'Information Plane - Epoch number - ' + str(epochsInds[num])
-    adjustAxes(axes[0], axis_font, title_str, x_ticks, y_ticks, x_lim, y_lim, set_xlabel=True, set_ylabel=True,
+    plt_ut.adjustAxes(axes[0], axis_font, title_str, x_ticks, y_ticks, x_lim, y_lim, set_xlabel=True, set_ylabel=True,
                x_label='$I(X;T)$',y_label='$I(T;Y)$')
     #Print the loss function and the error
     if len(axes)>1:
@@ -190,7 +152,7 @@ def update_line(num, print_loss, data, axes, epochsInds, test_error, test_data, 
                 font_size = 18, axis_font=16, x_lim = [0,12.2], y_lim=[0, 1.08], x_ticks = [], y_ticks = []):
     """Update the figure of the infomration plane for the movie"""
     #Print the line between the points
-    cmap = ListedColormap(['red', 'green', 'blue', 'yellow', 'pink', 'orange'])
+    cmap = ListedColormap(LAYERS_COLORS)
     segs = []
     for i in range(0, data.shape[1]):
         x = data[0, i, num, :]
@@ -209,10 +171,10 @@ def update_line(num, print_loss, data, axes, epochsInds, test_error, test_data, 
     axes[1].plot(epochsInds[:num], 1 - np.mean(test_error[:, :num], axis=0), color ='r')
 
     title_str = 'Information Plane - Epoch number - ' + str(epochsInds[num])
-    adjustAxes(axes[0], axis_font, title_str, x_ticks, y_ticks, x_lim, y_lim, set_xlabel=True, set_ylabel=True,
+    plt_ut.adjustAxes(axes[0], axis_font, title_str, x_ticks, y_ticks, x_lim, y_lim, set_xlabel=True, set_ylabel=True,
                x_label='$I(X;T)$', y_label='$I(T;Y)$')
     title_str = 'Precision as function of the epochs'
-    adjustAxes(axes[1], axis_font, title_str, x_ticks, y_ticks, x_lim, y_lim, set_xlabel=True, set_ylabel=True,
+    plt_ut.adjustAxes(axes[1], axis_font, title_str, x_ticks, y_ticks, x_lim, y_lim, set_xlabel=True, set_ylabel=True,
                x_label='# Epochs', y_label='Precision')
 
 
@@ -267,7 +229,7 @@ def plot_animation(name_s, save_name):
     loss_test_data = data_array['loss_test_data']
     f, (axes) = plt.subplots(2, 1)
     f.subplots_adjust(left=0.14, bottom=0.1, right=.928, top=0.94, wspace=0.13, hspace=0.55)
-    colors = ['red', 'green', 'blue', 'yellow', 'pink', 'orange', 'purple', 'olive', 'black']
+    colors = LAYERS_COLORS
     #new/old version
     if False:
         Ix = np.squeeze(data[0,:,-1,-1, :, :])
@@ -307,7 +269,7 @@ def plot_animation_each_neuron(name_s, save_name, print_loss=False):
     f, (axes) = plt.subplots(1, 1)
     axes = [axes]
     f.subplots_adjust(left=0.14, bottom=0.1, right=.928, top=0.94, wspace=0.13, hspace=0.55)
-    colors = ['red', 'green', 'blue', 'yellow', 'pink', 'orange', 'purple', 'olive', 'black']
+    colors = LAYERS_COLORS
     #new/old version
     Ix = np.squeeze(data[0,:, :, :])
     Iy = np.squeeze(data[1,:, :, :])
@@ -459,10 +421,14 @@ def plot_figures(str_names, mode, save_name):
             name_s = str_names[i][j]
             #Load data for the given file
             data_array= get_data(name_s)
-            data  = data_array['information']
+            data  = np.squeeze(np.array(data_array['information']))
+            #I_XT_array = np.array(extract_array(data, 'local_IXT'))
+            #I_TY_array = np.array(extract_array(data, 'local_ITY'))
+            I_XT_array = np.array(extract_array(data, 'IXT_vartional'))
+            I_TY_array = np.array(extract_array(data, 'ITY_vartional'))
             epochsInds = data_array['params']['epochsInds']
-            I_XT_array = np.squeeze(np.array(data))[:, :, 0]
-            I_TY_array = np.squeeze(np.array(data))[:, :, 1]
+            #I_XT_array = np.squeeze(np.array(data))[:, :, 0]
+            #I_TY_array = np.squeeze(np.array(data))[:, :, 1]
             #Plot it
             if mode ==3:
                 plot_by_training_samples(I_XT_array, I_TY_array, axes, epochsInds, f, i, j, sizes[i][j], font_size, yticks, xticks, colorbar_axis, title_strs[i][j], axis_font, bar_font, save_name)
@@ -549,59 +515,33 @@ def update_axes(axes, xlabel, ylabel, xlim, ylim, title, xscale, yscale, x_ticks
     leg2.get_title().set_fontsize('21')  # legend 'Title' fontsize
     plt.gca().add_artist(leg1)
     plt.gca().add_artist(leg2)
-    axes.set_xscale(xscale)
-    axes.set_yscale(yscale)
-    axes.set_xlabel(xlabel,fontsize=font_size)
-    axes.set_ylabel(ylabel, fontsize=font_size)
-    axes.xaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter())
-    axes.yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter())
-    axes.set_xticks(x_ticks)
-    axes.set_yticks(y_ticks )
-    axes.tick_params(axis='x', labelsize=axis_font)
-    axes.tick_params(axis='y', labelsize=axis_font)
-    axes.set_xlim(xlim)
-    axes.set_ylim(ylim)
-    axes.xaxis.major.formatter._useMathText = True
-    axes.set_yticklabels(labels)
-    axes.xaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter(useMathText=True))
-
-
-def update_axes_norms(axes, xlabel, ylabel, grey_line_index = 370):
-    """Adjust the axes of the norms figure with labels/ticks"""
-    font_size = 30
-    axis_font = 25
-    legend_font = 16
-    #the legends
-    categories = [r'$\|W_1\|$', r'$\|W_2\|$', r'$\|W_3\|$', r'$\|W_4\|$', r'$\|W_5\|$', r'$\|W_6\|$']
-    #Grey line in the middle
-    axes.axvline(x=grey_line_index, color='grey', linestyle=':', linewidth=4)
-    axes.legend(categories , loc='best', fontsize=legend_font)
-    axes.set_xlabel(xlabel, fontsize=font_size)
-    axes.set_ylabel(ylabel, fontsize=font_size)
-    axes.tick_params(axis='x', labelsize=axis_font)
-    axes.tick_params(axis='y', labelsize=axis_font)
+    plt_ut.adjustAxes(axes,axis_font=20,title_str='', x_ticks=x_ticks, y_ticks=y_ticks, x_lim=xlim, y_lim=ylim,
+               set_xlabel=True, set_ylabel=True, x_label=xlabel, y_label=ylabel,set_xlim=True,set_ylim=True, set_ticks=True,label_size=font_size, set_yscale=True,
+               set_xscale = True, yscale=yscale, xscale=xscale, ytick_labels = labels, genreal_scaling=True)
 
 
 def plot_gradients(name_s):
     """Plot the gradients and the means of the networks over the batchs"""
     data_array= get_data(name_s[0][0])
-    gradients = data_array['gradients']
-    ws = data_array['weights']
-    epochsInds = data_array['epochsInds']
-    traces_layers, means_layers,p_1, p_0 ,l2_norms= [],[], [], [],[]
+    gradients = data_array['var_grad_val']
+    ws = data_array['ws']
+    epochsInds = (data_array['params']['epochsInds']).astype(np.int)
+    data = np.squeeze(np.array(data_array['information']))
+    I_TY_array = np.array(extract_array(data, 'local_ITY'))
     fig_size = (14, 10)
     f_norms, (axes_norms) = plt.subplots(1, 1, figsize=fig_size)
     f_log, (axes_log) = plt.subplots(1, 1,figsize=fig_size)
     f_log.subplots_adjust(left=0.097, bottom=0.11, right=.95, top=0.95, wspace=0.03, hspace=0.03)
-    colors = ['red','c', 'blue', 'green', 'orange', 'purple']
+    colors = LAYERS_COLORS
     #TODO - change it to auto
     num_of_layer = 6
     #Go over the layers
-    for layer_index in range(1,num_of_layer):
+    for layer_index in range(0,num_of_layer-1):
+        traces_layers, means_layers, p_1, p_0, l2_norms = [], [], [], [], []
         print layer_index
         #We want to skip the biasses so we need to go every 2 indexs
         layer = layer_index*2
-        #Go over the wieghts
+        #Go over the weights
         for k in range(len(gradients)):
             #print k
             grad = np.squeeze(gradients[k][0][0])
@@ -609,7 +549,7 @@ def plot_gradients(name_s):
             ws_in = ws[k][0][0]
             cov_traces ,means,means,layer_l2_norm= [], [] ,[],[]
             #Go over all the epochs
-            for epoch_number in range(len(grad)):
+            for epoch_number in range(len(ws_in)):
                 print ('epoche number' ,epoch_number)
                 #the weights of the layer as one-dim vector
                 if type(ws_in[epoch_number][layer_index]) is list:
@@ -620,13 +560,11 @@ def plot_gradients(name_s):
                 gradients_list = []
                 #For each neuron go over all the weights
                 for i in range(len(grad[epoch_number])):
-                        #print ('i', i)
                     current_list_inner = []
                     for neuron in range(len(grad[epoch_number][0][layer])):
                         c_n = grad[epoch_number,i][layer][neuron]
                         current_list_inner.extend(c_n)
                     gradients_list.append(current_list_inner)
-                #print ('finsihed i')
                 #the gradients are  dimensions of [#batchs][#weights]
                 gradients_list = np.array(gradients_list)
                 #the average over the batchs
@@ -635,26 +573,18 @@ def plot_gradients(name_s):
                 norm_mean = np.sqrt(np.dot(average_vec.T, average_vec))
                 covs_mat = np.zeros((average_vec.shape[0], average_vec.shape[0]))
                 #Go over all the vectors of batchs, reduce thier mean and calculate the covariance matrix
-
-                #print ('starat batch')
                 for batch in range(gradients_list.shape[0]):
-                    #print ('batch', batch)
-
                     current_vec = gradients_list[batch, :] - average_vec
-                    #print ('se')
                     current_cov_mat = np.dot(current_vec[:,None], current_vec[None,:])
-                    #print ('th')
                     covs_mat+=current_cov_mat
                 #Take the mean cov matrix
-                #print ('finished batch')
                 mean_cov_mat = np.array(covs_mat)/ gradients_list.shape[0]
                 #The trace of the cov matrix
-                trac_cov = np.trace(mean_cov_mat)
+                trac_cov = np.trace(np.array(mean_cov_mat))
                 means.append(norm_mean)
-                cov_traces.append(trac_cov)
+                cov_traces.append(np.sqrt(trac_cov))
                 #Second method if we have a lot of neurons
                 """
-
                 #cov_traces.append(np.mean(grad_norms))
                 #means.append(norm_mean)
                 c_var,c_mean,total_w = [], [],[]
@@ -678,75 +608,161 @@ def plot_gradients(name_s):
             means_layers.append(np.array(means))
             traces_layers.append((np.array(cov_traces)))
         #Normalize by the l_2 norms
-        y_var = np.mean(np.array(traces_layers), axis=0)/np.mean(np.array(l2_norms), axis=0)
-        y_mean = np.mean(np.array(means_layers), axis=0)/np.mean(np.array(l2_norms), axis=0)
+        y_var = np.mean(np.array(traces_layers), axis=0) / np.mean(l2_norms, axis=0)
+        y_mean = np.mean(np.array(means_layers), axis=0)/ np.mean(l2_norms, axis=0)
         #Plot the gradients and the means
-        c_p1, = axes_log.plot(epochsInds, y_var,markersize = 4, linewidth = 4,color = colors[layer_index], linestyle=':', markeredgewidth=0.2, dashes = [4,4])
-        c_p0,= axes_log.plot(epochsInds, y_mean,  linewidth = 2,color = colors[layer_index])
+        c_p1, = axes_log.plot(epochsInds[:], y_var,markersize = 4, linewidth = 4,color = colors[layer_index], linestyle=':', markeredgewidth=0.2, dashes = [4,4])
+        c_p0,= axes_log.plot(epochsInds[:], y_mean,  linewidth = 2,color = colors[layer_index])
         #plot the norms
-        axes_norms.plot(epochsInds, np.mean(np.array(l2_norms), axis=0),linewidth = 2)
+        axes_norms.plot(epochsInds[:], np.mean(np.array(l2_norms), axis=0),linewidth = 2, color = colors[layer_index])
         #For the legend
         p_0.append(c_p0)
         p_1.append(c_p1)
     #adejust the figure according the specipic labels, scaling and legends
     #Change the log and log to linear if you want linear scaling
-    update_axes(axes_log, '# Epochs', 'Normalized Mean and STD', [0, 7000], [0.000001, 10], '', 'log', 'log', [1, 10, 100, 1000, 7000], [0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10], p_0, p_1)
-    update_axes_norms(axes_norms, '# Epochs', '$L_2$')
+    #update_axes(reg_axes, '# Epochs', 'Normalized Mean and STD', [0, 10000], [0.000001, 10], '', 'log', 'log', [1, 10, 100, 1000, 10000], [0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10], p_0, p_1)
+    update_axes(axes_log, '# Epochs', 'Normalized Mean and STD', [0, 9000], [0.000001, 1000], '', 'log', 'log', [1, 10, 100, 1000, 20000], [0.00001, 0.0001, 0.001, 0.01, 0.1, 1, 10, 100], p_0, p_1)
+    plt_ut.adjustAxes(axes_norms, axis_font=20, title_str='',
+                      set_xlabel=True, set_ylabel=True, x_label='# Epochs', y_label='$L_2$')
+    # the legends
+    categories = [r'$\|W_1\|$', r'$\|W_2\|$', r'$\|W_3\|$', r'$\|W_4\|$', r'$\|W_5\|$', r'$\|W_6\|$']
+    axes_norms.legend(categories, loc='best', fontsize=16)
     f_log.savefig('log_gradient.jpg', dpi=200, format= 'jpg')
     f_norms.savefig('norms.jpg', dpi=200, format= 'jpg')
 
+def extract_array(data, name):
+    results = [[data[j,k][name] for k in range(data.shape[1])] for j in range(data.shape[0])]
+    return results
 
-def plot_eigs_movie(name):
-    f, (axes) = plt.subplots(1, 1)
-    data_array = get_data(
-        name[0][0])
-    eigs =data_array['eigs']
-    eigs = np.squeeze(np.array([eig for eig in eigs]))
-    for layer_index in range(3,6):
-        print 'Index of  the layer - ' +str(layer_index)
-        line_ani = animation.FuncAnimation(f, plot_eigs_update,4000, repeat=False,
-                                           interval=555, blit=False, fargs=(axes,eigs, data_array['epochsInds'], layer_index))
-        Writer = animation.writers['ffmpeg']
-        writer = Writer(fps=15)
-        # Save the movie
-        line_ani.save('L_' +str(layer_index) + '_movie.mp4', writer=writer, dpi=250)
+def update_bars_num_of_ts(num, p_ts, H_Xgt,DKL_YgX_YgT, axes, ind_array):
+    print num
+    axes[1].clear()
+    axes[2].clear()
+    axes[0].clear()
+    current_pts =p_ts[num]
+    current_H_Xgt = H_Xgt[num]
+    current_DKL_YgX_YgT = DKL_YgX_YgT[num]
+    num_of_t = [c_pts.shape[0] for c_pts in current_pts]
+    x = range(len(num_of_t))
+    axes[0].bar(x, num_of_t)
+    axes[0].set_title('Number of Ts in every layer - Epoch number - {0}'.format(ind_array[num]))
+    axes[0].set_xlabel('Layer Number')
+    axes[0].set_ylabel('# of Ts')
+    axes[0].set_ylim([0, 800])
+    h_list, dkl_list = [], []
+    for i in range(len(current_pts)):
+        h_list.append(-np.dot(current_H_Xgt[i],current_pts[i]))
+        dkl_list.append(np.dot(current_DKL_YgX_YgT[i].T, current_pts[i]))
+    axes[1].bar(x,h_list)
+    axes[2].bar(x,dkl_list)
+
+    axes[2].bar(x, dkl_list)
+    axes[1].set_title('H(X|T)', title_size = 16)
+    axes[1].set_xlabel('Layer Number')
+    axes[1].set_ylabel('H(X|T)')
+
+    axes[2].set_title('DKL[p(y|x)||p(y|t)]',fontsize = 16)
+    axes[2].set_xlabel('Layer Number')
+    axes[2].set_ylabel('DKL[p(y|x)||p(y|t)]',fontsize = 16)
+
+def update_bars_entropy(num, H_Xgt,DKL_YgX_YgT, axes, ind_array):
+    print num
+    axes[0].clear()
+    current_H_Xgt =np.mean(H_Xgt[num], axis=0)
+    x = range(len(current_H_Xgt))
+    axes[0].bar(x, current_H_Xgt)
+    axes[0].set_title('H(X|T) in every layer - Epoch number - {0}'.format(ind_array[num]))
+    axes[0].set_xlabel('Layer Number')
+    axes[0].set_ylabel('# of Ts')
 
 
-def plot_eigs_update(epoch_number,axes, eigs,epochsInds, layer_index):
-    if np.mod(epoch_number, 10) ==1:
-        print epoch_number
-    axes.clear()
-    #We want to skip the biasses so we need to go every 2 indexs
-    current_eigs = eigs[:, epoch_number, layer_index]
-    weights = np.ones_like(current_eigs) / len(current_eigs)
-    bins = np.arange(0,1, 0.01)
+def plot_hist(str_name, save_name='dist'):
+    data_array = get_data(str_name)
+    params = np.squeeze(np.array(data_array['information']))
+    ind_array = data_array['params']['epochsInds']
+    DKL_YgX_YgT = extract_array(params, 'DKL_YgX_YgT')
+    p_ts = extract_array(params, 'pts')
+    H_Xgt = extract_array(params, 'H_Xgt')
 
-    vals,bins, s = axes.hist(current_eigs, bins=bins, weights=weights, facecolor='green', alpha=0.75)
-    #print max(bins)
-    axes.set_title('Epochs ' +str(2*epochsInds[epoch_number]))
-    axes.set_ylim([0,1])
-    axes.set_xlim([-0.01,1])
-    rects = axes.patches
+    f, (axes) = plt.subplots(3, 1)
+    #axes = [axes]
+    f.subplots_adjust(left=0.14, bottom=0.1, right=.928, top=0.94, wspace=0.13, hspace=0.55)
+    colors = LAYERS_COLORS
+    line_ani = animation.FuncAnimation(f, update_bars_num_of_ts, len(p_ts), repeat=False,
+                                       interval=1, blit=False, fargs=[p_ts,H_Xgt,DKL_YgX_YgT, axes,ind_array])
+    Writer = animation.writers['ffmpeg']
+    writer = Writer(fps=50)
+    #Save the movie
+    line_ani.save(save_name+'_movie.mp4',writer=writer,dpi=250)
+    plt.show()
 
-    # Now make some labels
-    #labels = ["label%d" % i for i in xrange(len(rects))]
-    height = 19
-    #axes.text(rects[0].get_x() + rects[0].get_width() / 2, height + 5, int(vals[0]), ha='center', va='bottom')
+def plot_alphas(str_name, save_name='dist'):
+    data_array = get_data(str_name)
+    params = np.squeeze(np.array(data_array['information']))
+    I_XT_array = np.squeeze(np.array(extract_array(params, 'local_IXT')))
+    """"
+    for i in range(I_XT_array.shape[2]):
+        f1, axes1 = plt.subplots(1, 1)
+
+        axes1.plot(I_XT_array[:,:,i])
+    plt.show()
+    return
     """
-    for rect, label in zip(rects, vals):
-        if label>0:
+    I_XT_array_var = np.squeeze(np.array(extract_array(params, 'IXT_vartional')))
+    I_TY_array_var = np.squeeze(np.array(extract_array(params, 'ITY_vartional')))
 
-            if i==0:
-                height = 25
-                i=1
-            else:
-
-                height = rect.get_height()
-                #print height
-            axes.text(rect.get_x() + rect.get_width() / 2, height + 5, int(label), ha='center', va='bottom')
+    I_TY_array = np.squeeze(np.array(extract_array(params, 'local_ITY')))
     """
+    f1, axes1 = plt.subplots(1, 1)
+    #axes1.plot(I_XT_array,I_TY_array)
+    f1, axes2 = plt.subplots(1, 1)
 
+    axes1.plot(I_XT_array ,I_TY_array_var)
+    axes2.plot(I_XT_array ,I_TY_array)
+    f1, axes1 = plt.subplots(1, 1)
+    axes1.plot(I_TY_array, I_TY_array_var)
+    axes1.plot([0, 1.1], [0, 1.1], transform=axes1.transAxes)
+    #axes1.set_title('Sigmma=' + str(sigmas[i]))
+    axes1.set_ylim([0, 1.1])
+    axes1.set_xlim([0, 1.1])
+    plt.show()
+    return
+    """
+    #for i in range()
+    sigmas = np.linspace(0, 0.3, 20)
 
+    for i in range(0,20):
+        print (i, sigmas[i])
+        f1, axes1 = plt.subplots(1, 1)
+        print I_XT_array
+        axes1.plot(I_XT_array, I_XT_array_var[:,:,i], linewidth=5)
+        axes1.plot([0, 15.1], [0, 15.1], transform=axes1.transAxes)
+        axes1.set_title('Sigmma=' +str(sigmas[i]))
+        axes1.set_ylim([0,15.1])
+        axes1.set_xlim([0,15.1])
+    plt.show()
+    return
+    epochs_s = data_array['params']['epochsInds']
+    f, axes = plt.subplots(1, 1)
+    #epochs_s = []
+    colors = LAYERS_COLORS
+    linestyles  = [ '--', '-.', '-','', ' ',':', '']
+    epochs_s =[0, -1]
+    for j in epochs_s:
+        print j
+        for i  in range(0, I_XT_array.shape[1]):
+
+            axes.plot(sigmas, I_XT_array_var[j,i,:],color = colors[i], linestyle = linestyles[j], label='Layer-'+str(i) +' Epoch - ' +str(epochs_s[j]))
+    title_str = 'I(X;T) for different layers as function of $\sigma$ (The width of the gaussian)'
+    x_label = '$\sigma$'
+    y_label = '$I(X;T)$'
+    x_lim = [0, 3]
+    plt_ut.adjustAxes(axes, axis_font=20, title_str=title_str, x_ticks=[], y_ticks=[], x_lim=x_lim, y_lim=None,
+               set_xlabel=True, set_ylabel=True, x_label=x_label, y_label=y_label, set_xlim=True, set_ylim=False, set_ticks=False,
+               label_size=20, set_yscale=False,
+               set_xscale=False, yscale=None, xscale=None, ytick_labels='', genreal_scaling=False)
+    axes.legend()
+    plt.show()
 if __name__ == '__main__':
     #The action the you want to plot
     #Plot snapshots of all the networks
@@ -765,7 +781,7 @@ if __name__ == '__main__':
     sofix = '.pickle'
     prex2 = '/Users/ravidziv/PycharmProjects/IDNNs/jobs/'
     #plot above action, the norms, the gradients and the pearson coeffs
-    do_plot_action, do_plot_norms, do_plot_gradients, do_plot_pearson,  = True, False, False, False
+    do_plot_action, do_plot_norms, do_plot_gradients, do_plot_pearson,  = False, False, True, False
     do_plot_eig = False
     plot_movie = False
     do_plot_time_stepms = False

@@ -7,6 +7,7 @@ import cPickle
 import shutil
 import re
 import argparse
+import sys
 from idnns.plots import plot_figures as plt_fig
 from idnns.information import information_process  as inn
 import  tensorflow as tf
@@ -103,7 +104,7 @@ def get_default_parser(num_of_samples = None):
                         help='The interval for display the information calculation')
 
     parser.add_argument('-cov_net',
-                        '-cov', dest="cov_net", type=str2bool, nargs='?', const=False,default=False,
+                        '-cov', dest="cov_net", type=int, default=0,
                         help='True if we want covnet')
 
     parser.add_argument('-rl',
@@ -153,8 +154,8 @@ class informationNetwork():
         #load data
         self.data_sets = nn.load_data(self.name, args.random_labels)
         #create arrays for saving the data
-        self.ws, self.grads, self.information,self.models ,self.names, self.networks = [[[[[None] for k in range(len(self.train_samples))] for j in range(len(self.layers_sizes))]
-                      for i in range(self.num_of_repeats)] for _ in range(6)]
+        self.ws, self.grads, self.information,self.models ,self.names, self.networks,self.weights = [[[[[None] for k in range(len(self.train_samples))] for j in range(len(self.layers_sizes))]
+                      for i in range(self.num_of_repeats)] for _ in range(7)]
 
         self.loss_train, self.loss_test,  self.test_error, self.train_error, self.l1_norms, self.l2_norms= \
             [np.zeros((self.num_of_repeats, len(self.layers_sizes), len(self.train_samples), len(self.epochs_indexes))) for _ in range(6)]
@@ -176,11 +177,12 @@ class informationNetwork():
 
     def save_data(self,parent_dir='jobs/', file_to_save = 'data.pickle'):
         """Save the data to the file """
-        directory =  '{0}{1}/'.format(parent_dir, self.params['directory'])
+        directory =  '{0}/{1}{2}/'.format(os.path.dirname(sys.argv[0]), parent_dir, self.params['directory'])
+
         data = {'information': self.information,
                      'test_error': self.test_error, 'train_error': self.train_error, 'var_grad_val': self.grads,
                      'loss_test': self.loss_test, 'loss_train': self.loss_train, 'params': self.params
-            , 'l1_norms': self.l1_norms, 'activation': self.ws}
+            , 'l1_norms': self.l1_norms, 'weights': self.weights, 'ws': self.ws}
 
         if not os.path.exists(directory):
             os.makedirs(directory)
@@ -206,7 +208,7 @@ class informationNetwork():
         elif type_net == '5':
             self.layers_sizes = [[10]]
         elif type_net == '6':
-            self.layers_sizes = [[1000, 500, 100]]
+            self.layers_sizes = [[1, 1, 1,1]]
         else:
             #Custom network
             self.layers_sizes = [map(int, inner.split(',')) for inner in re.findall("\[(.*?)\]", type_net)]
@@ -244,6 +246,7 @@ class informationNetwork():
                     current_network = results[index]
                     self.networks[k][j][i] = current_network
                     self.ws[k][j][i] =current_network['ws']
+                    self.weights[k][j][i] = current_network['weights']
                     self.information[k][j][i] = current_network['information']
                     self.grads[k][i][i] = current_network['gradients']
                     self.test_error[k, j, i, :] = current_network['test_prediction']

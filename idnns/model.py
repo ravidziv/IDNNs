@@ -33,6 +33,47 @@ def _convert_string_dtype(dtype):
     else:
         raise ValueError('Unsupported dtype:', dtype)
 
+
+def multi_layer_perceptron(x, n_input, n_classes, n_hidden_1, n_hidden_2):
+    hidden = []
+    input = []
+    hidden.append(x)
+    # Network Parameters
+    #n_input = x.shape[0]  # MNIST data input (img shape: 28*28)
+    #n_classes = 10  # MNIST total classes (0-9 digits)
+
+    weights = {
+        'h1': tf.Variable(tf.random_normal([n_input, n_hidden_1])),
+        'h2': tf.Variable(tf.random_normal([n_hidden_1, n_hidden_2])),
+        'out': tf.Variable(tf.random_normal([n_hidden_2, n_classes]))
+    }
+    biases = {
+        'b1': tf.Variable(tf.random_normal([n_hidden_1])),
+        'b2': tf.Variable(tf.random_normal([n_hidden_2])),
+        'out': tf.Variable(tf.random_normal([n_classes]))
+    }
+
+    # Hidden layer with RELU activation
+    layer_1_input = tf.add(tf.matmul(x, weights['h1']), biases['b1'])
+    layer_1 = tf.nn.relu(layer_1_input)
+    input.append(layer_1)
+    hidden.append(layer_1)
+    # Hidden layer with RELU activation
+    layer_2_input = tf.add(tf.matmul(layer_1, weights['h2']), biases['b2'])
+    layer_2 = tf.nn.relu(layer_2_input)
+    input.append(layer_2_input)
+    hidden.append(layer_2)
+    # Output layer with linear activation
+    input_y = tf.matmul(layer_2, weights['out']) + biases['out']
+    y_output = tf.nn.softmax(input_y)
+    input.append(y_output)
+    hidden.append(y_output)
+
+    return y_output,hidden, input
+
+
+
+
 def deepnn(x):
     """deepnn builds the graph for a deep net for classifying digits.
     Args:
@@ -200,6 +241,8 @@ class Model:
         self.savers = []
         if activation_function ==1:
             self.activation_function = tf.nn.relu
+        elif activation_function==2:
+            self.activation_function =None
         else:
             self.activation_function = tf.nn.tanh
         self.prediction
@@ -222,7 +265,10 @@ class Model:
         variable_summaries(biases)
         with tf.variable_scope(name_scope) as scope:
             input = tf.matmul(last_hidden, weights) + biases
-            output = activation_function(input, name='output')
+            if activation_function ==None:
+                output =input
+            else:
+                output = activation_function(input, name='output')
         self.inputs.append(input)
         self.hidden.append(output)
         return output
@@ -237,9 +283,12 @@ class Model:
         if self.hidden is None:
             self.hidden,self.inputs,self.weights_all,self.biases_all = [], [], [],[]
             last_hidden = self.x
-            if self.covnet:
+            if self.covnet==1:
                 y_conv, self._drouput, self.hidden,self.inputs = deepnn(self.x)
+            elif self.covnet==2:
+                y_c, self.hidden, self.inputs = multi_layer_perceptron(self.x, self.input_size, self.num_of_classes ,self.layerSize[0], self.layerSize[1])
             else:
+
                 self._drouput ='dr'
                 #self.hidden.append(self.x)
                 for i in xrange(1, len(self.all_layer_sizes)):
@@ -359,5 +408,10 @@ class Model:
         feed_dict = {self.x: X}
         layer_values = session.run(inputs, feed_dict=feed_dict)
         return layer_values
+
+    def print_model_prop(self):
+        """model properties -" 
+            Structure - {0}""".format(self.hidden)
+        print
 
 
