@@ -80,14 +80,13 @@ def calc_information_for_layer(data, bins, unique_inverse_x, unique_inverse_y, l
 
     return local_IXT, local_ITY
 
-def calc_information_for_layer_with_other(data, bins, unique_inverse_x, unique_inverse_y, label, estimted_label,
-                                          b, b1, len_unique_a, pys, py_hats, pxs, p_YgX, layer_index, epoch_index, pys1):
+def calc_information_sampling(data, bins, pys1, pxs, label, b, b1, len_unique_a, p_YgX , unique_inverse_x, unique_inverse_y):
+
     bins = bins.astype(np.float32)
     num_of_bins = bins.shape[0]
     from scipy import stats
-    #bins = stats.mstats.mquantiles(np.squeeze(data.reshape(1, -1)), np.linspace(0,1, num=num_of_bins))
-
-    #hist, bin_edges = np.histogram(np.squeeze(data.reshape(1, -1)), normed=True)
+    # bins = stats.mstats.mquantiles(np.squeeze(data.reshape(1, -1)), np.linspace(0,1, num=num_of_bins))
+    # hist, bin_edges = np.histogram(np.squeeze(data.reshape(1, -1)), normed=True)
     digitized = bins[np.digitize(np.squeeze(data.reshape(1, -1)), bins) - 1].reshape(len(data), -1)
     b2 = np.ascontiguousarray(digitized).view(
         np.dtype((np.void, digitized.dtype.itemsize * digitized.shape[1])))
@@ -98,13 +97,24 @@ def calc_information_for_layer_with_other(data, bins, unique_inverse_x, unique_i
     pxy_given_T = np.array(
         [calc_probs(i, unique_inverse_t, label, b, b1, len_unique_a) for i in range(0, len(unique_array))]
     )
-    p_XgT = np.vstack(pxy_given_T[:,0])
-    p_YgT = pxy_given_T[:,1]
+    p_XgT = np.vstack(pxy_given_T[:, 0])
+    p_YgT = pxy_given_T[:, 1]
     p_YgT = np.vstack(p_YgT).T
-    DKL_YgX_YgT = np.sum([inf_ut.KL(c_p_YgX, p_YgT.T ) for c_p_YgX  in p_YgX.T ], axis=0)
-    H_Xgt = np.nansum(p_XgT*np.log2(p_XgT), axis=1)
-    num_of_ts = p_ts.shape[0]
-    local_IXT, local_ITY = calc_information_from_mat(PXs, PYs, p_ts, digitized, unique_inverse_x, unique_inverse_y, unique_array)
+    DKL_YgX_YgT = np.sum([inf_ut.KL(c_p_YgX, p_YgT.T) for c_p_YgX in p_YgX.T], axis=0)
+    H_Xgt = np.nansum(p_XgT * np.log2(p_XgT), axis=1)
+    local_IXT, local_ITY = calc_information_from_mat(PXs, PYs, p_ts, digitized, unique_inverse_x, unique_inverse_y,
+                                                     unique_array)
+    return local_IXT, local_ITY,DKL_YgX_YgT,p_ts,H_Xgt
+
+def calc_information_for_layer_with_other(data, bins, unique_inverse_x, unique_inverse_y, label, estimted_label,
+                                          b, b1, len_unique_a, pys, py_hats, pxs, p_YgX, layer_index, epoch_index, pys1, percent_of_sampling = 50):
+    local_IXT, local_ITY,DKL_YgX_YgT,p_ts,H_Xgt = calc_information_sampling(data, bins, pys1, pxs, label, b, b1, len_unique_a, p_YgX , unique_inverse_x, unique_inverse_y)
+    number_of_indexs = int(data.shape[1] * (1. / 100 * percent_of_sampling))
+    indexs_of_sampls = np.random.choice(data.shape[1], number_of_indexs, replace=False)
+    if percent_of_sampling !=100:
+        sampled_data = data[:, indexs_of_sampls]
+        sampled_local_IXT, sampled_local_ITY,sampled_DKL_YgX_YgT,sampled_p_ts,sampled_H_Xgt = calc_information_sampling(sampled_data, bins, pys1, pxs, label, b, b1, len_unique_a, p_YgX , unique_inverse_x, unique_inverse_y)
+
 
     params={}
     params['DKL_YgX_YgT'] = DKL_YgX_YgT
@@ -112,12 +122,14 @@ def calc_information_for_layer_with_other(data, bins, unique_inverse_x, unique_i
     params['H_Xgt'] = H_Xgt
     params['local_IXT'] = local_IXT
     params['local_ITY'] = local_ITY
+    params['local_IXT_sampled'] = sampled_local_IXT
+    params['local_ITY_sampled'] = sampled_local_ITY
     return params
 
 
 def calc_information_for_epoch(iter_index, interval_information_display, ws_iter_index, bins, unique_inverse_x, unique_inverse_y, label, estimted_label, b, b1,
                                len_unique_a, pys, py_hats, pxs, py_x, pys1, model_path, input_size, layerSize,
-                               calc_vartional_information=True, calc_information_by_sampling=False,calc_combined = False,calc_regular_information = False):
+                               calc_vartional_information=False, calc_information_by_sampling=False,calc_combined = False,calc_regular_information = True):
     """Calculate the information for all the layers for specific epoch"""
     np.random.seed(None)
     if calc_combined:
@@ -188,7 +200,7 @@ def calc_information_for_epoch(iter_index, interval_information_display, ws_iter
     return params
 
 
-def get_information(ws, x, label, estimted_label, num_of_bins, interval_information_display, indexs, model, layerSize, calc_parallel = False, py_hats = 0):
+def get_information(ws, x, label, estimted_label, num_of_bins, interval_information_display, indexs, model, layerSize, calc_parallel = True, py_hats = 0):
     """Calculate the information for the network for all the epochs and all the layers"""
     print ('Start calculating the information...')
     bins = np.linspace(-1, 1, num_of_bins)
