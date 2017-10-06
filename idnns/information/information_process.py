@@ -1,7 +1,7 @@
 import multiprocessing
 from idnns.information.mutual_info_estimation import mutual_information
 import entropy_estimators as ee
-import information.information_utilities as inf_ut
+import idnns.information.information_utilities as inf_ut
 import numpy as np
 import tensorflow as tf
 from idnns import model as mo
