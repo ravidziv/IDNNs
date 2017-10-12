@@ -1,7 +1,7 @@
 """
 Train % plot networks in the information plane
 """
-from idnns import information_network as inet
+from idnns.networks import information_network as inet
 def main():
     #Bulid the netowrk
     print ('Building the network')
