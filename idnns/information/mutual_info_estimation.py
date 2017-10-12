@@ -6,7 +6,6 @@ from idnns.networks import model as mo
 import contextlib
 import idnns.information.entropy_estimators as ee
 
-
 @contextlib.contextmanager
 def printoptions(*args, **kwargs):
 	original = np.get_printoptions()
@@ -169,7 +168,6 @@ def calc_varitional_information(data, labels, model_path, layer_numer, num_of_la
 	params['local_ITY'] = I_TY
 	return params
 
-
 def estimate_Information(Xs, Ys, Ts):
 	"""Estimation of the MI from missing data based on k-means clustring"""
 	estimate_IXT = ee.mi(Xs, Ts)
@@ -177,3 +175,4 @@ def estimate_Information(Xs, Ys, Ts):
 	# estimate_IXT1 = ee.mi(Xs, Ts)
 	# estimate_IYT1 = ee.mi(Ys, Ts)
 	return estimate_IXT, estimate_IYT
+

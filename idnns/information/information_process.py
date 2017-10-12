@@ -77,8 +77,8 @@ def calc_information_for_layer_with_other(data, bins, unique_inverse_x, unique_i
 
 def calc_by_sampling_neurons(ws_iter_index, num_of_samples, label, sigma, bins, pxs):
 	iter_infomration = []
-	for i in range(len(ws_iter_index)):
-		data = ws_iter_index[i]
+	for j in range(len(ws_iter_index)):
+		data = ws_iter_index[j]
 		new_data = np.zeros((num_of_samples * data.shape[0], data.shape[1]))
 		labels = np.zeros((num_of_samples * label.shape[0], label.shape[1]))
 		x = np.zeros((num_of_samples * data.shape[0], 2))
