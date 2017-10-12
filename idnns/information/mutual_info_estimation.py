@@ -1,256 +1,179 @@
-'''
-Non-parametric computation of entropy and mutual-information
-
-Adapted by G Varoquaux for code created by R Brette, itself
-from several papers (see in the code).
-
-These computations rely on nearest-neighbor statistics
-'''
 import numpy as np
-
-from scipy.special import gamma,psi
-from scipy import ndimage
-from scipy.linalg import det
-from numpy import pi
-
-from sklearn.neighbors import NearestNeighbors
-
-__all__=['entropy', 'mutual_information', 'entropy_gaussian']
-
-EPS = np.finfo(float).eps
+from scipy.optimize import minimize
+import sys
+import tensorflow as tf
+from idnns.networks import model as mo
+import contextlib
+import idnns.information.entropy_estimators as ee
 
 
-def nearest_distances(X, k=1):
-    '''
-    X = array(N,M)
-    N = number of points
-    M = number of dimensions
-
-    returns the distance to the kth nearest neighbor for every point in X
-    '''
-    knn = NearestNeighbors(n_neighbors=k)
-    knn.fit(X)
-    d, _ = knn.kneighbors(X) # the first nearest neighbor is itself
-    return d[:, -1] # returns the distance to the kth nearest neighbor
+@contextlib.contextmanager
+def printoptions(*args, **kwargs):
+	original = np.get_printoptions()
+	np.set_printoptions(*args, **kwargs)
+	try:
+		yield
+	finally:
+		np.set_printoptions(**original)
 
 
-def entropy_gaussian(C):
-    '''
-    Entropy of a gaussian variable with covariance matrix C
-    '''
-    if np.isscalar(C): # C is the variance
-        return .5*(1 + np.log(2*pi)) + .5*np.log(C)
+def optimiaze_func(s, diff_mat, d, N):
+	diff_mat1 = (1. / (np.sqrt(2. * np.pi) * (s ** 2) ** (d / 2.))) * np.exp(-diff_mat / (2. * s ** 2))
+	np.fill_diagonal(diff_mat1, 0)
+	diff_mat2 = (1. / (N - 1)) * np.sum(diff_mat1, axis=0)
+	diff_mat3 = np.sum(np.log2(diff_mat2), axis=0)
+	return -diff_mat3
+
+
+def calc_all_sigams(data, sigmas):
+	batchs = 128
+	num_of_bins = 8
+	# bins = np.linspace(-1, 1, num_of_bins).astype(np.float32)
+	# bins = stats.mstats.mquantiles(np.squeeze(data.reshape(1, -1)), np.linspace(0,1, num=num_of_bins))
+	# data = bins[np.digitize(np.squeeze(data.reshape(1, -1)), bins) - 1].reshape(len(data), -1)
+
+	batch_points = np.rint(np.arange(0, data.shape[0] + 1, batchs)).astype(dtype=np.int32)
+	I_XT = []
+	num_of_rand = min(800, data.shape[1])
+	for sigma in sigmas:
+		# print sigma
+		I_XT_temp = 0
+		for i in range(0, len(batch_points) - 1):
+			new_data = data[batch_points[i]:batch_points[i + 1], :]
+			rand_indexs = np.random.randint(0, new_data.shape[1], num_of_rand)
+			new_data = new_data[:, :]
+			N = new_data.shape[0]
+			d = new_data.shape[1]
+			diff_mat = np.linalg.norm(((new_data[:, np.newaxis, :] - new_data)), axis=2)
+			# print diff_mat.shape, new_data.shape
+			s0 = 0.2
+			# DOTO -add leaveoneout validation
+			res = minimize(optimiaze_func, s0, args=(diff_mat, d, N), method='nelder-mead',
+			               options={'xtol': 1e-8, 'disp': False, 'maxiter': 6})
+			eta = res.x
+			diff_mat0 = - 0.5 * (diff_mat / (sigma ** 2 + eta ** 2))
+			diff_mat1 = np.sum(np.exp(diff_mat0), axis=0)
+			diff_mat2 = -(1.0 / N) * np.sum(np.log2((1.0 / N) * diff_mat1))
+			I_XT_temp += diff_mat2 - d * np.log2((sigma ** 2) / (eta ** 2 + sigma ** 2))
+			# print diff_mat2 - d*np.log2((sigma**2)/(eta**2+sigma**2))
+		I_XT_temp /= len(batch_points)
+		I_XT.append(I_XT_temp)
+	sys.stdout.flush()
+	return I_XT
+
+
+def estimate_IY_by_network(data, labels, from_layer=0):
+	if len(data.shape) > 2:
+		input_size = data.shape[1:]
     else:
-        n = C.shape[0] # dimension
-        return .5*n*(1 + np.log(2*pi)) + .5*np.log(abs(det(C)))
+	    input_size = data.shape[1]
+	p_y_given_t_i = data
+	acc_all = [0]
+	if from_layer < 5:
 
-
-def entropy(X, k=1):
-    ''' Returns the entropy of the X.
-
-    Parameters
-    ===========
-
-    X : array-like, shape (n_samples, n_features)
-        The data the entropy of which is computed
-
-    k : int, optional
-        number of nearest neighbors for density estimation
-
-    Notes
-    ======
-
-    Kozachenko, L. F. & Leonenko, N. N. 1987 Sample estimate of entropy
-    of a random vector. Probl. Inf. Transm. 23, 95-101.
-    See also: Evans, D. 2008 A computationally efficient estimator for
-    mutual information, Proc. R. Soc. A 464 (2093), 1203-1215.
-    and:
-    Kraskov A, Stogbauer H, Grassberger P. (2004). Estimating mutual
-    information. Phys Rev E 69(6 Pt 2):066138.
-    '''
-
-    # Distance to kth nearest neighbor
-    r = nearest_distances(X, k) # squared distances
-    n, d = X.shape
-    volume_unit_ball = (pi**(.5*d)) / gamma(.5*d + 1)
-    '''
-    F. Perez-Cruz, (2008). Estimation of Information Theoretic Measures
-    for Continuous Random Variables. Advances in Neural Information
-    Processing Systems 21 (NIPS). Vancouver (Canada), December.
-    '''
-    #jcreturn d*np.mean(np.log(r))+np.log(volume_unit_ball)+np.log(n-1)-np.log(k)
-
-    return (d*np.mean(np.log(r + np.finfo(X.dtype).eps))
-            + np.log(volume_unit_ball) + psi(n) - psi(k))
-
-
-def mutual_information(variables,PYs,  k=1):
-    '''
-    Returns the mutual information between any number of variables.
-    Each variable is a matrix X = array(n_samples, n_features)
-    where
-      n = number of samples
-      dx,dy = number of dimensions
-
-    Optionally, the following keyword argument can be specified:
-      k = number of nearest neighbors for density estimation
-
-    Example: mutual_information((X, Y)), mutual_information((X, Y, Z), k=5)
-    '''
-    if len(variables) < 2:
-        raise AttributeError(
-                "Mutual information must involvum([entropy(X, k=k)e at least 2 variables")
-    all_vars = np.hstack(variables)
-    #PYs = variables[1]
+		acc_all = []
+		g1 = tf.Graph()  ## This is one graph
+		with g1.as_default():
+			# For each epoch and for each layer we calculate the best decoder - we train a 2 lyaer network
+			cov_net = 4
+			model = mo.Model(input_size, [400, 100, 50], labels.shape[1], 0.0001, '', cov_net=cov_net,
+			                 from_layer=from_layer)
+			if from_layer < 5:
+				optimizer = model.optimize
+			init = tf.global_variables_initializer()
+			num_of_ephocs = 50
+			batch_size = 51
+			batch_points = np.rint(np.arange(0, data.shape[0] + 1, batch_size)).astype(dtype=np.int32)
+			if data.shape[0] not in batch_points:
+				batch_points = np.append(batch_points, [data.shape[0]])
+		with tf.Session(graph=g1) as sess:
+			sess.run(init)
+			if from_layer < 5:
+				for j in range(0, num_of_ephocs):
+					for i in range(0, len(batch_points) - 1):
+						batch_xs = data[batch_points[i]:batch_points[i + 1], :]
+						batch_ys = labels[batch_points[i]:batch_points[i + 1], :]
+						feed_dict = {model.x: batch_xs, model.labels: batch_ys}
+						if cov_net == 1:
+							feed_dict[model.drouput] = 0.5
+						optimizer.run(feed_dict)
+			p_y_given_t_i = []
+			batch_size = 256
+			batch_points = np.rint(np.arange(0, data.shape[0] + 1, batch_size)).astype(dtype=np.int32)
+			if data.shape[0] not in batch_points:
+				batch_points = np.append(batch_points, [data.shape[0]])
+			for i in range(0, len(batch_points) - 1):
+				batch_xs = data[batch_points[i]:batch_points[i + 1], :]
+				batch_ys = labels[batch_points[i]:batch_points[i + 1], :]
+				feed_dict = {model.x: batch_xs, model.labels: batch_ys}
+				if cov_net == 1:
+					feed_dict[model.drouput] = 1
+				p_y_given_t_i_local, acc = sess.run([model.prediction, model.accuracy],
+				                                    feed_dict=feed_dict)
+				acc_all.append(acc)
+				if i == 0:
+					p_y_given_t_i = np.array(p_y_given_t_i_local)
+				else:
+					p_y_given_t_i = np.concatenate((p_y_given_t_i, np.array(p_y_given_t_i_local)), axis=0)
+					# print ("The accuracy of layer number - {}  - {}".format(from_layer, np.mean(acc_all)))
+	max_indx = len(p_y_given_t_i)
+	labels_cut = labels[:max_indx, :]
+	true_label_index = np.argmax(labels_cut, 1)
+	s = np.log2(p_y_given_t_i[np.arange(len(p_y_given_t_i)), true_label_index])
+	I_TY = np.mean(s[np.isfinite(s)])
+	PYs = np.sum(labels_cut, axis=0) / labels_cut.shape[0]
     Hy = np.nansum(-PYs * np.log2(PYs + np.spacing(1)))
-
-    return (np.sum(entropy(variables[0], k=k)+Hy)
-            - entropy(all_vars, k=k))
-
-
-def mutual_information_2d(x, y, sigma=1, normalized=False):
-    """
-    Computes (normalized) mutual information between two 1D variate from a
-    joint histogram.
-
-    Parameters
-    ----------
-    x : 1D array
-        first variable
-
-    y : 1D array
-        second variable
-
-    sigma: float
-        sigma for Gaussian smoothing of the joint histogram
-
-    Returns
-    -------
-    nmi: float
-        the computed similariy measure
-
-    """
-    bins = (256, 256)
-
-    jh = np.histogram2d(x, y, bins=bins)[0]
-
-    # smooth the jh with a gaussian filter of given sigma
-    ndimage.gaussian_filter(jh, sigma=sigma, mode='constant',
-                                 output=jh)
-
-    # compute marginal histograms
-    jh = jh + EPS
-    sh = np.sum(jh)
-    jh = jh / sh
-    s1 = np.sum(jh, axis=0).reshape((-1, jh.shape[0]))
-    s2 = np.sum(jh, axis=1).reshape((jh.shape[1], -1))
-
-    # Normalised Mutual Information of:
-    # Studholme,  jhill & jhawkes (1998).
-    # "A normalized entropy measure of 3-D medical image alignment".
-    # in Proc. Medical Imaging 1998, vol. 3338, San Diego, CA, pp. 132-143.
-    if normalized:
-        mi = ((np.sum(s1 * np.log(s1)) + np.sum(s2 * np.log(s2)))
-                / np.sum(jh * np.log(jh))) - 1
-    else:
-        mi = ( np.sum(jh * np.log(jh)) - np.sum(s1 * np.log(s1))
-               - np.sum(s2 * np.log(s2)))
-
-    return mi
+	I_TY = Hy + I_TY
+	I_TY = I_TY if I_TY >= 0 else 0
+	acc = np.mean(acc_all)
+	sys.stdout.flush()
+	return I_TY, acc
 
 
+def calc_varitional_information(data, labels, model_path, layer_numer, num_of_layers, epoch_index, input_size,
+                                layerSize, sigma, pys, ks,
+                                search_sigma=False, estimate_y_by_network=False):
+	"""Calculate estimation of the information using vartional IB"""
+	# Assumpations
+	estimate_y_by_network = True
+	# search_sigma = False
+	data_x = data.reshape(data.shape[0], -1)
 
-###############################################################################
-# Tests
+	if search_sigma:
+		sigmas = np.linspace(0.2, 10, 20)
+		sigmas = [0.2]
 
-def test_entropy():
-    # Testing against correlated Gaussian variables
-    # (analytical results are known)
-    # Entropy of a 3-dimensional gaussian variable
-    rng = np.random.RandomState(0)
-    n = 50000
-    d = 3
-    P = np.array([[1, 0, 0], [0, 1, .5], [0, 0, 1]])
-    C = np.dot(P, P.T)
-    Y = rng.randn(d, n)
-    X = np.dot(P, Y)
-    H_th = entropy_gaussian(C)
-    H_est = entropy(X.T, k=5)
-    # Our estimated entropy should always be less that the actual one
-    # (entropy estimation undershoots) but not too much
-    np.testing.assert_array_less(H_est, H_th)
-    np.testing.assert_array_less(.9*H_th, H_est)
+	else:
+		sigmas = [sigma]
+	if False:
+		I_XT = calc_all_sigams(data_x, sigmas)
+	else:
+		I_XT = 0
+	if estimate_y_by_network:
 
+		I_TY, acc = estimate_IY_by_network(data, labels, from_layer=layer_numer)
+	else:
+		I_TY = 0
+	with printoptions(precision=3, suppress=True, formatter={'float': '{: 0.3f}'.format}):
+		print ('[{0}:{1}] - I(X;T) - {2}, I(X;Y) - {3}, accuracy - {4}'.format(epoch_index, layer_numer,
+		                                                                       np.array(I_XT).flatten(), I_TY, acc))
+	sys.stdout.flush()
 
-def test_mutual_information():
-    # Mutual information between two correlated gaussian variables
-    # Entropy of a 2-dimensional gaussian variable
-    n = 50000
-    rng = np.random.RandomState(0)
-    #P = np.random.randn(2, 2)
-    P = np.array([[1, 0], [0.5, 1]])
-    C = np.dot(P, P.T)
-    U = rng.randn(2, n)
-    Z = np.dot(P, U).T
-    X = Z[:, 0]
-    X = X.reshape(len(X), 1)
-    Y = Z[:, 1]
-    Y = Y.reshape(len(Y), 1)
-    # in bits
-    MI_est = mutual_information((X, Y), k=5)
-    MI_th = (entropy_gaussian(C[0, 0])
-             + entropy_gaussian(C[1, 1])
-             - entropy_gaussian(C)
-            )
-    # Our estimator should undershoot once again: it will undershoot more
-    # for the 2D estimation that for the 1D estimation
-    print  MI_est, MI_th
-    np.testing.assert_array_less(MI_est, MI_th)
-    np.testing.assert_array_less(MI_th, MI_est  + .3)
+	# I_est = mutual_inform[ation((data, labels[:, 0][:, None]), PYs, k=ks)
+	# I_est,I_XT = 0, 0
+	params = {}
+	# params['DKL_YgX_YgT'] = DKL_YgX_YgT
+	# params['pts'] = p_ts
+	# params['H_Xgt'] = H_Xgt
+	params['local_IXT'] = I_XT
+	params['local_ITY'] = I_TY
+	return params
 
 
-def test_degenerate():
-    # Test that our estimators are well-behaved with regards to
-    # degenerate solutions
-    rng = np.random.RandomState(0)
-    x = rng.randn(50000)
-    X = np.c_[x, x]
-    assert np.isfinite(entropy(X))
-    assert np.isfinite(mutual_information((x[:, np.newaxis],
-                                           x[:,  np.newaxis])))
-    assert 2.9 < mutual_information_2d(x, x) < 3.1
-
-
-def test_mutual_information_2d():
-    # Mutual information between two correlated gaussian variables
-    # Entropy of a 2-dimensional gaussian variable
-    n = 50000
-    rng = np.random.RandomState(0)
-    #P = np.random.randn(2, 2)
-    P = np.array([[1, 0], [.9, .1]])
-    C = np.dot(P, P.T)
-    U = rng.randn(2, n)
-    Z = np.dot(P, U).T
-    X = Z[:, 0]
-    X = X.reshape(len(X), 1)
-    Y = Z[:, 1]
-    Y = Y.reshape(len(Y), 1)
-    # in bits
-    MI_est = mutual_information_2d(X.ravel(), Y.ravel())
-    MI_th = (entropy_gaussian(C[0, 0])
-             + entropy_gaussian(C[1, 1])
-             - entropy_gaussian(C)
-            )
-    print  MI_est, MI_th
-    # Our estimator should undershoot once again: it will undershoot more
-    # for the 2D estimation that for the 1D estimation
-    np.testing.assert_array_less(MI_est, MI_th)
-    np.testing.assert_array_less(MI_th, MI_est  + .2)
-
-
-if __name__ == '__main__':
-    # Run our tests
-    #test_entropy()
-    test_mutual_information()
-    #test_degenerate()
-    test_mutual_information_2d()
+def estimate_Information(Xs, Ys, Ts):
+	"""Estimation of the MI from missing data based on k-means clustring"""
+	estimate_IXT = ee.mi(Xs, Ts)
+	estimate_IYT = ee.mi(Ys, Ts)
+	# estimate_IXT1 = ee.mi(Xs, Ts)
+	# estimate_IYT1 = ee.mi(Ys, Ts)
+	return estimate_IXT, estimate_IYT
