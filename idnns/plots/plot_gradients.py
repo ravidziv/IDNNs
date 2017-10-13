@@ -213,11 +213,11 @@ def load_from_memory(data_array):
 
 
 if __name__ == '__main__':
-	directory = './figures/'
-	if not os.path.exists(directory):
-		os.makedirs(directory)
+    directory = './figures/'
+    if not os.path.exists(directory):
+        os.makedirs(directory)
     root = tk.Tk()
     root.withdraw()
     file_path = filedialog.askopenfilename()
     str_names = [[('/').join(file_path.split('/')[:-1]) + '/']]
-	plot_gradients(str_names, figures_dir=directory)
+    plot_gradients(str_names, figures_dir=directory)

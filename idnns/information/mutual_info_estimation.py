@@ -64,8 +64,8 @@ def calc_all_sigams(data, sigmas):
 def estimate_IY_by_network(data, labels, from_layer=0):
 	if len(data.shape) > 2:
 		input_size = data.shape[1:]
-    else:
-	    input_size = data.shape[1]
+	else:
+		input_size = data.shape[1]
 	p_y_given_t_i = data
 	acc_all = [0]
 	if from_layer < 5:
@@ -121,7 +121,7 @@ def estimate_IY_by_network(data, labels, from_layer=0):
 	s = np.log2(p_y_given_t_i[np.arange(len(p_y_given_t_i)), true_label_index])
 	I_TY = np.mean(s[np.isfinite(s)])
 	PYs = np.sum(labels_cut, axis=0) / labels_cut.shape[0]
-    Hy = np.nansum(-PYs * np.log2(PYs + np.spacing(1)))
+	Hy = np.nansum(-PYs * np.log2(PYs + np.spacing(1)))
 	I_TY = Hy + I_TY
 	I_TY = I_TY if I_TY >= 0 else 0
 	acc = np.mean(acc_all)
