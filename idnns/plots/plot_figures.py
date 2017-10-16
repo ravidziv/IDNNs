@@ -625,11 +625,11 @@ if __name__ == '__main__':
     do_plot_eig = False
     plot_movie = False
     do_plot_time_stepms = False
-    #str_names = [[prex2+'fo_layersSizes=[[10, 7, 5, 4, 3]]_LastEpochsInds=9998_numRepeats=1_batch=3563_DataName=reg_1_numEphocs=10000_learningRate=0.0004_numEpochsInds=964_samples=1_num_of_disribuation_samples=1/']]
+    #str_names = [[prex2+'fo_layerSizes=10,7,5,4,3_LastEpochsInds=9998_nRepeats=1_batch=3563_DataName=reg_1_nEpoch=10000_lr=0.0004_nEpochInds=964_samples=1_nDistSmpls=1/']]
     if action == TIME_STEMPS or action == MOVIE:
         index = 1
-        name_s = prex2+ 'g_layersSizes=[[10, 7, 5, 4, 3]]_LastEpochsInds=9998_numRepeats=40_batch=3563_DataName=var_u_numEphocs=10000_learningRate=0.0002_numEpochsInds=964_samples=1_num_of_disribuation_samples=1/'
-        name_s = prex2 +'r_DataName=MNIST_samples_len=1_layersSizes=[[400, 200, 150, 60, 50, 40, 30]]_learningRate=0.0002_numEpochsInds=677_numRepeats=1_LastEpochsInds=1399_num_of_disribuation_samples=1_numEphocs=1400_batch=2544/'
+        name_s = prex2+ 'g_layerSizes=10,7,5,4,3_LastEpochsInds=9998_nRepeats=40_batch=3563_DataName=var_u_nEpoch=10000_lr=0.0002_nEpochInds=964_samples=1_nDistSmpls=1/'
+        name_s = prex2 +'r_DataName=MNIST_sampleLen=1_layerSizes=400,200,150,60,50,40,30_lr=0.0002_nEpochInds=677_nRepeats=1_LastEpochsInds=1399_nDistSmpls=1_nEpoch=1400_batch=2544/'
         if action ==TIME_STEMPS:
             save_name = '3_time_series'
             #plot_snapshots(name_s, save_name, index)
@@ -641,13 +641,13 @@ if __name__ == '__main__':
             mode =11
             save_name = ALL_LAYERS
             str_names = [[prex + 'ff3_5_198.pickle', prex+ 'ff3_4_198.pickle',prex + 'ff3_3_198.pickle'],[prex + 'ff3_2_198.pickle',prex + 'ff3_1_198.pickle',prex + 'ff4_1_10.pickle']]
-            str_names[1][2] = prex2+'g_layersSizes=[[10, 7, 5, 4, 4, 3]]_LastEpochsInds=9998_numRepeats=20_batch=3563_DataName=var_u_numEphocs=10000_learningRate=0.0004_numEpochsInds=964_samples=1_num_of_disribuation_samples=1/'
-            str_names = [[prex2 +'nbins8_DataName=var_u_samples_len=1_layersSizes=[[10, 7, 5, 4, 3]]_learningRate=0.0004_numEpochsInds=964_numRepeats=5_LastEpochsInds=9998_num_of_disribuation_samples=1_numEphocs=10000_batch=4096/',
-                          prex2 +'nbins12_DataName=var_u_samples_len=1_layersSizes=[[10, 7, 5, 4, 3]]_learningRate=0.0004_numEpochsInds=964_numRepeats=5_LastEpochsInds=9998_num_of_disribuation_samples=1_numEphocs=10000_batch=4096/',
-                          prex2 +'nbins18_DataName=var_u_samples_len=1_layersSizes=[[10, 7, 5, 4, 3]]_learningRate=0.0004_numEpochsInds=964_numRepeats=5_LastEpochsInds=9998_num_of_disribuation_samples=1_numEphocs=10000_batch=4096/']
-                         ,[prex2 +'nbins25_DataName=var_u_samples_len=1_layersSizes=[[10, 7, 5, 4, 3]]_learningRate=0.0004_numEpochsInds=964_numRepeats=5_LastEpochsInds=9998_num_of_disribuation_samples=1_numEphocs=10000_batch=4096/',
-                           prex2 +'nbins35_DataName=var_u_samples_len=1_layersSizes=[[10, 7, 5, 4, 3]]_learningRate=0.0004_numEpochsInds=964_numRepeats=5_LastEpochsInds=9998_num_of_disribuation_samples=1_numEphocs=10000_batch=4096/',
-                           prex2 + 'nbins50_DataName=var_u_samples_len=1_layersSizes=[[10, 7, 5, 4, 3]]_learningRate=0.0004_numEpochsInds=964_numRepeats=5_LastEpochsInds=9998_num_of_disribuation_samples=1_numEphocs=10000_batch=4096/'                         ]]
+            str_names[1][2] = prex2+'g_layerSizes=10,7,5,4,4,3_LastEpochsInds=9998_nRepeats=20_batch=3563_DataName=var_u_nEpoch=10000_lr=0.0004_nEpochInds=964_samples=1_nDistSmpls=1/'
+            str_names = [[prex2 +'nbins8_DataName=var_u_sampleLen=1_layerSizes=10,7,5,4,3_lr=0.0004_nEpochInds=964_nRepeats=5_LastEpochsInds=9998_nDistSmpls=1_nEpoch=10000_batch=4096/',
+                          prex2 +'nbins12_DataName=var_u_sampleLen=1_layerSizes=10,7,5,4,3_lr=0.0004_nEpochInds=964_nRepeats=5_LastEpochsInds=9998_nDistSmpls=1_nEpoch=10000_batch=4096/',
+                          prex2 +'nbins18_DataName=var_u_sampleLen=1_layerSizes=10,7,5,4,3_lr=0.0004_nEpochInds=964_nRepeats=5_LastEpochsInds=9998_nDistSmpls=1_nEpoch=10000_batch=4096/']
+                         ,[prex2 +'nbins25_DataName=var_u_sampleLen=1_layerSizes=10,7,5,4,3_lr=0.0004_nEpochInds=964_nRepeats=5_LastEpochsInds=9998_nDistrSmpls=1_nEpoch=10000_batch=4096/',
+                           prex2 +'nbins35_DataName=var_u_sampleLen=1_layerSizes=10,7,5, 4,3_lr=0.0004_nEpochInds=964_nRepeats=5_LastEpochsInds=9998_nDistSmpls=1_nEpoch=10000_batch=4096/',
+                           prex2 + 'nbins50_DataName=var_u_sampleLen=1_layerSizes=10,7,5,4,3_lr=0.0004_nEpochInds=964_nRepeats=5_LastEpochsInds=9998_nDistSmpls=1_nEpoch=10000_batch=4096/'                         ]]
         elif action == COMPRAED_PERCENT:
             save_name = COMPRAED_PERCENT
             #mode =0
