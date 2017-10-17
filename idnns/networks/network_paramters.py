@@ -55,8 +55,8 @@ def get_default_parser(num_of_samples=None):
 	                    type=int,
 	                    help='The max number of indexes for calculate information')
 
-	parser.add_argument('-num_of_disribuation_samples',
-	                    '-nds', dest="num_of_disribuation_samples", default=1,
+	parser.add_argument('-nDistSmpls',
+	                    '-nds', dest="nDistSmpls", default=1,
 	                    type=int, help='S')
 
 	parser.add_argument('-save_ws',

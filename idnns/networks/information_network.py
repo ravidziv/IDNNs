@@ -56,12 +56,12 @@ class informationNetwork():
 			[np.zeros((self.num_of_repeats, len(self.layers_sizes), len(self.train_samples), len(self.epochs_indexes)))
 			 for _ in range(6)]
 
-		params = {'samples_len': len(self.train_samples),
-		          'num_of_disribuation_samples': args.num_of_disribuation_samples,
-		          'layersSizes': self.layers_sizes, 'numEphocs': args.num_ephocs, 'batch': args.batch_size,
-		          'numRepeats': args.num_of_repeats, 'numEpochsInds': len(self.epochs_indexes),
+		params = {'sampleLen': len(self.train_samples),
+		          'nDistSmpls': args.nDistSmpls,
+		          'layerSizes': ",".join(str(i) for i in self.layers_sizes[0]), 'nEpoch': args.num_ephocs, 'batch': args.batch_size,
+		          'nRepeats': args.num_of_repeats, 'nEpochInds': len(self.epochs_indexes),
 		          'LastEpochsInds': self.epochs_indexes[-1], 'DataName': args.data_name,
-		          'learningRate': args.learning_rate}
+		          'lr': args.learning_rate}
 
 		self.name_to_save = args.name + "_" + "_".join([str(i) + '=' + str(params[i]) for i in params])
 		params['train_samples'], params['CPUs'], params[
@@ -73,7 +73,7 @@ class informationNetwork():
 
 	def save_data(self, parent_dir='jobs/', file_to_save='data.pickle'):
 		"""Save the data to the file """
-		directory = '{0}/{1}{2}/'.format(os.path.dirname(sys.argv[0]), parent_dir, self.params['directory'])
+		directory = '{0}/{1}{2}/'.format(os.getcwd(), parent_dir, self.params['directory'])
 
 		data = {'information': self.information,
 		        'test_error': self.test_error, 'train_error': self.train_error, 'var_grad_val': self.grads,
