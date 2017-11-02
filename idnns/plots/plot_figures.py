@@ -395,7 +395,7 @@ def plot_figures(str_names, mode, save_name):
             data  = np.squeeze(np.array(data_array['information']))
             I_XT_array = np.array(extract_array(data, 'local_IXT'))
             I_TY_array = np.array(extract_array(data, 'local_ITY'))
-            # I_XT_array = np.array(extract_array(data, 'IXT_vartional'))
+            #I_XT_array = np.array(extract_array(data, 'IXT_vartional'))
             #I_TY_array = np.array(extract_array(data, 'ITY_vartional'))
             epochsInds = data_array['params']['epochsInds']
             #I_XT_array = np.squeeze(np.array(data))[:, :, 0]

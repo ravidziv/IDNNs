@@ -18,7 +18,7 @@ def get_default_parser(num_of_samples=None):
 	                    type=int, help='The number of the first sample that we calculate the information')
 
 	parser.add_argument('-batch_size',
-	                    '-b', dest="batch_size", default=256,
+	                    '-b', dest="batch_size", default=512,
 	                    type=int, help='The size of the batch')
 
 	parser.add_argument('-learning_rate',
