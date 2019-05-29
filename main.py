@@ -3,7 +3,7 @@ Train % plot networks in the information plane
 """
 from idnns.networks import information_network as inet
 def main():
-    #Bulid the netowrk
+    #Build the network
     print ('Building the network')
     net = inet.informationNetwork()
     net.print_information()
