@@ -8,7 +8,7 @@ NUM_CORES = multiprocessing.cpu_count()
 
 
 def calc_entropy_for_specipic_t(current_ts, px_i):
-	"""Calc entropy for specipic t"""
+	"""Calc entropy for specific t"""
 	b2 = np.ascontiguousarray(current_ts).view(
 		np.dtype((np.void, current_ts.dtype.itemsize * current_ts.shape[1])))
 	unique_array, unique_inverse_t, unique_counts = \
@@ -19,7 +19,7 @@ def calc_entropy_for_specipic_t(current_ts, px_i):
 	return H2X
 
 
-def calc_condtion_entropy(px, t_data, unique_inverse_x):
+def calc_condition_entropy(px, t_data, unique_inverse_x):
 	# Condition entropy of t given x
 	H2X_array = np.array(
 		Parallel(n_jobs=NUM_CORES)(delayed(calc_entropy_for_specipic_t)(t_data[unique_inverse_x == i, :], px[i])
@@ -31,8 +31,8 @@ def calc_condtion_entropy(px, t_data, unique_inverse_x):
 def calc_information_from_mat(px, py, ps2, data, unique_inverse_x, unique_inverse_y, unique_array):
 	"""Calculate the MI based on binning of the data"""
 	H2 = -np.sum(ps2 * np.log2(ps2))
-	H2X = calc_condtion_entropy(px, data, unique_inverse_x)
-	H2Y = calc_condtion_entropy(py.T, data, unique_inverse_y)
+	H2X = calc_condition_entropy(px, data, unique_inverse_x)
+	H2Y = calc_condition_entropy(py.T, data, unique_inverse_y)
 	IY = H2 - H2Y
 	IX = H2 - H2X
 	return IX, IY
