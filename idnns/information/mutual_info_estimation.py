@@ -16,7 +16,7 @@ def printoptions(*args, **kwargs):
         np.set_printoptions(**original)
 
 
-def optimiaze_func(s, diff_mat, d, N):
+def optimize_func(s, diff_mat, d, N):
     diff_mat1 = (1. / (np.sqrt(2. * np.pi) * (s ** 2) ** (d / 2.))) * np.exp(-diff_mat / (2. * s ** 2))
     np.fill_diagonal(diff_mat1, 0)
     diff_mat2 = (1. / (N - 1)) * np.sum(diff_mat1, axis=0)
@@ -47,7 +47,7 @@ def calc_all_sigams(data, sigmas):
             # print diff_mat.shape, new_data.shape
             s0 = 0.2
             # DOTO -add leaveoneout validation
-            res = minimize(optimiaze_func, s0, args=(diff_mat, d, N), method='nelder-mead',
+            res = minimize(optimize_func, s0, args=(diff_mat, d, N), method='nelder-mead',
                            options={'xtol': 1e-8, 'disp': False, 'maxiter': 6})
             eta = res.x
             diff_mat0 = - 0.5 * (diff_mat / (sigma ** 2 + eta ** 2))
